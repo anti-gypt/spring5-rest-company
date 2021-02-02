@@ -1,14 +1,30 @@
 package antigypt.springframework.Services;
 
+import antigypt.springframework.api.v1.mapper.RecruitmentMapper;
+import antigypt.springframework.api.v1.model.RecruitmentDTO;
+import antigypt.springframework.domain.Recruitment;
 import antigypt.springframework.repositories.RecruitmentRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RecruitmnetServiceImpl implements RecruitmentService {
-    public RecruitmnetServiceImpl(RecruitmentRepository recruitmentRepository) {
-        this.recruitmentRepository = recruitmentRepository;
-    }
 
     private final RecruitmentRepository recruitmentRepository;
+    private final RecruitmentMapper recruitmentMapper;
 
+    public RecruitmnetServiceImpl(RecruitmentRepository recruitmentRepository, RecruitmentMapper recruitmentMapper) {
+        this.recruitmentRepository = recruitmentRepository;
+        this.recruitmentMapper = recruitmentMapper;
+    }
+
+    @Override
+    public RecruitmentDTO createNewRecruitmnet(RecruitmentDTO recruitmentDTO) {
+
+        Recruitment toBeSaved = recruitmentMapper.recruitmnetDTOToRecruitment(recruitmentDTO);
+        Recruitment savedRecruitment = recruitmentRepository
+                .save(toBeSaved);
+        RecruitmentDTO returnedDTO = recruitmentMapper.recruitmentToRecruitmentDTO(savedRecruitment);
+        recruitmentDTO.setRecruitmentUrl("/api/v1/recruitments/"+savedRecruitment.getRecruitmentId());
+        return recruitmentDTO ;
+    }
 }
