@@ -1,10 +1,6 @@
 package antigypt.springframework.domain;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-
-
 import javax.persistence.*;
 import java.time.LocalDate;
 

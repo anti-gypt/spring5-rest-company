@@ -2,11 +2,11 @@ package antigypt.springframework.api.v1.mapper;
 
 import antigypt.springframework.api.v1.model.RecruitmentDTO;
 import antigypt.springframework.domain.Recruitment;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+
 
 
 @Mapper
@@ -18,9 +18,11 @@ public interface RecruitmentMapper {
                @Mapping(source = "country",target = "address.country"),
                @Mapping(source = "city",target = "address.city"),
                @Mapping(source = "region",target = "address.region"),
-               @Mapping(source = "postalCode",target = "address.postalCode"),
-
+               @Mapping(source = "postalCode",target = "address.postalCode")
     })
     Recruitment recruitmnetDTOToRecruitment(RecruitmentDTO recruitmentDTO);
+
+
+
 
 }
