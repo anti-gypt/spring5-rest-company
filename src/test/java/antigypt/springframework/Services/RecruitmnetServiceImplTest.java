@@ -2,6 +2,7 @@ package antigypt.springframework.Services;
 
 import antigypt.springframework.api.v1.mapper.RecruitmentMapper;
 import antigypt.springframework.api.v1.model.RecruitmentDTO;
+import antigypt.springframework.controllers.api.v1.RecruitmentController;
 import antigypt.springframework.domain.Address;
 import antigypt.springframework.domain.Gender;
 import antigypt.springframework.domain.Recruitment;
@@ -11,6 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,7 +38,10 @@ class RecruitmnetServiceImplTest {
     private static final String REGION = "Liesing";
     private static final String TITLE = "ING";
     private static final String BLOB_FILE = "this is blob file";
-
+    private static final MockMultipartFile SENDED_IMAGE =
+            new MockMultipartFile("imagefile","imagefile","text.txt","this si a byte sample".getBytes());
+    private static final MockMultipartFile SENDED_CV =
+            new MockMultipartFile("cvfile","cvfile","text.txt","this si a byte sample".getBytes());
 
     @Mock
     RecruitmentRepository recruitmentRepository;
@@ -54,7 +61,7 @@ class RecruitmnetServiceImplTest {
     }
 
     @Test
-    void createNewRecruitmnet() {
+    void createNewRecruitmnet() throws IOException {
 
         Address address = new Address();
         address.setAddressLine(ADDRESS_LINE);
@@ -99,10 +106,10 @@ class RecruitmnetServiceImplTest {
         retRec.setRegion(REGION);
         retRec.setTitle(TITLE);
         when(recruitmentRepository.save(any(Recruitment.class))).thenReturn(saveRec);
-        RecruitmentDTO savedReturnedDTO = recruitmentService.createNewRecruitmnet(retRec);
-        assertEquals(savedReturnedDTO.getCv().length,saveRec.getCv().length);
-        assertEquals(savedReturnedDTO.getPhoto().length,saveRec.getPhoto().length);
+        RecruitmentDTO savedReturnedDTO = recruitmentService.createNewRecruitmnet(retRec,SENDED_IMAGE,SENDED_CV);
+        assertEquals(savedReturnedDTO.getCv().length,SENDED_CV.getBytes().length);
+        assertEquals(savedReturnedDTO.getPhoto().length,SENDED_IMAGE.getBytes().length);
         assertEquals(savedReturnedDTO.getFirstName(),saveRec.getFirstName());
-        assertEquals("/api/v1/recruitments/1",savedReturnedDTO.getRecruitmentUrl());
+        assertEquals(RecruitmentController.BASE_URL+"/1",savedReturnedDTO.getRecruitmentUrl());
     }
 }
