@@ -1,8 +1,10 @@
 package antigypt.springframework.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
-import javax.annotation.PostConstruct;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -19,16 +21,24 @@ public class Recruitment {
         private String firstName;
         @Column(name = "lastName")
         private String lastName;
-        @Enumerated(EnumType.STRING)
-        private Title title;
-        @Enumerated(EnumType.STRING)
-        private Gender gender;
         @Column(name = "birthDate")
         private LocalDate birthDate;
         @Column(name = "applicationDate")
         private LocalDate applicationDate;
         @Column(name = "email")
         private String email;
+        @Column(name = "homePhone")
+        private String homePhone;
+        @Column(name = "mobilePhone")
+        private String mobilePhone;
+        @Column(name = "desiredSalary")
+        private Double desiredSalary;
+
+        @Enumerated(EnumType.STRING)
+        private Title title;
+        @Enumerated(EnumType.STRING)
+        private Gender gender;
+
         @Embedded
         @AttributeOverrides({
                 @AttributeOverride( name = "addressLine", column = @Column(name = "addressLine")),
@@ -38,12 +48,6 @@ public class Recruitment {
                 @AttributeOverride( name = "country", column = @Column(name = "country"))
         })
         private Address address;
-        @Column(name = "homePhone")
-        private String homePhone;
-        @Column(name = "mobilePhone")
-        private String mobilePhone;
-        @Column(name = "desiredSalary")
-        private Double desiredSalary;
 
         @Lob
         @Column(name = "photo")
@@ -55,11 +59,11 @@ public class Recruitment {
         @Column(name = "cv")
         private Byte[] cv;
 
-
-
-        @PostConstruct
-        public void init() {
-            setApplicationDate(LocalDate.now());
+        @PrePersist
+        public void onCreate(){
+                setApplicationDate(LocalDate.now());
         }
+
+
     }
 

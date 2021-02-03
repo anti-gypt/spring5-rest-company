@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.PostConstruct;
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,4 +35,5 @@ public class RecruitmentDTO {
     private Byte[] cv;
     @JsonProperty("recruitment_url")
     private String recruitmentUrl;
+
 }
