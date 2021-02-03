@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<fieldset>
+<legend>Recruitment</legend>
+<form th:object="${recruitmentForm}" th:action="@{'/api/v1/recruitments'}" method="post" enctype="multipart/form-data">
+    <table width="450" border="1" align="center">
+        <tr>
+            <td width="150" align="left">
+                <label> FirstName </label>
+            </td>
+            <td>
+                <input type="text" th:field="*{firstName}" placeholder="FirstName" required>
+            </td>
+        </tr>
+        <tr>
+            <td width="150" align="left">
+                <label> LastName </label>
+            </td>
+            <td>
+                <input type="text" th:field="*{lastName}" placeholder="LastName" required>
+            </td>
+        </tr>
+
+        <tr>
+            <td width="150" align="left">
+                <label> Title </label>
+            </td>
+            <td>
+                <select th:field="*{title}">
+                    <option th:each="titleValue : ${T(antigypt.springframework.domain.Title).values()}"
+                    th:value="${titleValue.name()}"
+                    th:text="${titleValue.name()}">DI</option>
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td width="150" align="left">
+                <label> Email </label>
+            </td>
+            <td>
+                <input type="email" th:field="*{email}">
+            </td>
+        </tr>
+       <!-- <tr>
+            <td width="150" align="left">
+                <label> Apply Date </label>
+            </td>
+            <td>
+                <input type="date" th:field="*{applicationDate}">
+            </td>
+        </tr>-->
+        <tr>
+            <td width="150" align="left">
+                <lablel> BirthDate  </lablel>
+            </td>
+            <td>
+                <input type="date" th:field="*{birthDate}">
+            </td>
+        </tr>
+        <tr>
+            <td width="150" align="left" valign="top">
+                <label>Adress </label>
+            </td>
+            <td>
+	 			<textarea rows="5" cols="35" th:field="*{addressLine}">
+
+	 			</textarea>
+            </td>
+        </tr>
+        <!--  ---------------------------------------------------------------------------- -->
+
+        <tr>
+            <td width="150" align="left">
+                <label>Gender</label>
+            </td>
+            <td>
+                <select th:field="*{gender}">
+                    <option th:each="genderValue : ${T(antigypt.springframework.domain.Gender).values()}"
+                th:value="${genderValue.name()}"
+                th:text="${genderValue.name()}">MALE</option>
+
+                </select>
+            </td>
+        </tr>
+
+        <!--  ---------------------------------------------------------------------------- -->
+
+        <tr>
+            <td width="150" align="left">
+                <label>Country</label>
+            </td>
+            <td>
+                <input type="text" th:field="*{country}" placeholder="country">
+            </td>
+        </tr>
+
+        <!--  ---------------------------------------------------------------------------- -->
+
+        <tr>
+            <td width="150" align="left">
+                <label>Region</label>
+            </td>
+            <td>
+                <input type="text" th:field="*{region}" placeholder="region">
+            </td>
+        </tr>
+        <tr>
+            <td width="150" align="left">
+                <label>City</label>
+            </td>
+            <td>
+                <input type="text" th:field="*{city}" placeholder="city">
+            </td>
+        </tr>
+
+        <tr>
+            <td width="150" align="left">
+                <label> PostalCode </label>
+            </td>
+            <td>
+                <input type="text" th:field="*{postalCode}" placeholder="PostalCode" required>
+            </td>
+        </tr>
+
+        <tr>
+            <td width="150" align="left">
+                <label> HomePhone </label>
+            </td>
+            <td>
+                <input type="text" th:field="*{homePhone}" placeholder="HomePhone" required>
+            </td>
+        </tr>
+
+        <tr>
+            <td width="150" align="left">
+                <label> MobilePhone </label>
+            </td>
+            <td>
+                <input type="text" th:field="*{mobilePhone}" placeholder="MobilePhone" required>
+            </td>
+        </tr>
+        <tr>
+            <td width="150" align="left">
+                <label>Photo</label>
+            </td>
+            <td>
+                <input type="file" name="imagefile">
+            </td>
+        </tr>
+        <tr>
+            <td width="150" align="left">
+                <label>CV </label>
+            </td>
+            <td>
+                <input type="file" name="cvfile">
+            </td>
+        </tr>
+        <tr>
+            <td width="150" align="left">
+                <lable> DesierdSalary </lable>
+            </td>
+            <td>
+                <input type="text" th:field="*{desiredSalary}" placeholder="DesierdSalary" required>
+            </td>
+        </tr>
+        <tr>
+            <td width="150" align="left" valign="top">
+                <lable>Detail</lable>
+            </td>
+            <td>
+	 			<textarea rows="5" cols="35" th:field="*{detail}">
+
+	 			</textarea>
+            </td>
+        </tr>
+        <tr>
+
+            <td colspan="2" align="center">
+                <input type="submit" value="submit" >
+            </td>
+
+        </tr>
+
+    </table>
+
+</form>
+</fieldset>
+
+</body>
+</html>
