@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -147,4 +148,18 @@ class RecruitmentControllerTest {
     }
 
 
+    @Test
+    void showRecruitmentImage() throws Exception {
+        RecruitmentDTO returnedDTO = new RecruitmentDTO();
+        returnedDTO.setRecruitmentUrl("/api/v1/recruitments/1");
+        returnedDTO.setPhoto(getBytes);
+        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(returnedDTO);
+        MockHttpServletResponse response = mockMvc.perform(get("/api/v1/recruitments/1/showimage"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        byte[] responseAsByteArray = response.getContentAsByteArray();
+        assertNotNull(responseAsByteArray);
+        assertEquals(responseAsByteArray.length,getBytes.length);
+
+    }
 }

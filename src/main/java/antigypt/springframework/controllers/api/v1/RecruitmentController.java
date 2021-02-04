@@ -2,11 +2,17 @@ package antigypt.springframework.controllers.api.v1;
 
 import antigypt.springframework.Services.RecruitmentService;
 import antigypt.springframework.api.v1.model.RecruitmentDTO;
+import lombok.SneakyThrows;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 @Controller
 @RequestMapping(RecruitmentController.BASE_URL)
@@ -40,5 +46,21 @@ public class RecruitmentController {
         }
         RecruitmentDTO savedRecruitmentDTO = recruitmentService.createNewRecruitmnet(recruitmentDTO);
         return "redirect:/api/v1/recruitments/"+savedRecruitmentDTO.getRecruitmentUrl().split("/")[4];
+    }
+
+
+
+    @SneakyThrows
+    @GetMapping("/{id}/showimage")
+    public void showRecruitmentImage(@PathVariable Long id, HttpServletResponse response){
+        RecruitmentDTO foundedRecruitmentDTO = recruitmentService.findRecruitmentById(id);
+        byte[] getBytes = new byte[foundedRecruitmentDTO.getPhoto().length];
+        int i = 0 ;
+        for (byte b : foundedRecruitmentDTO.getPhoto()){
+            getBytes[i++] = b;
+        }
+        InputStream is = new ByteArrayInputStream(getBytes);
+        response.setContentType("image/jpeg");
+        IOUtils.copy(is , response.getOutputStream());
     }
 }
