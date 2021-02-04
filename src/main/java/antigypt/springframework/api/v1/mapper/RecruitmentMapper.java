@@ -12,7 +12,19 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface RecruitmentMapper {
     RecruitmentMapper INSTANCE = Mappers.getMapper(RecruitmentMapper.class);
+
+
+
+    @Mappings({@Mapping( source = "email" , target = "email"),
+            @Mapping(source = "address.addressLine",target = "addressLine"),
+            @Mapping(source = "address.country",target = "country"),
+            @Mapping(source = "address.city",target = "city"),
+            @Mapping(source = "address.region",target = "region"),
+            @Mapping(source = "address.postalCode",target = "postalCode")
+    })
     RecruitmentDTO recruitmentToRecruitmentDTO(Recruitment recruitment);
+
+
     @Mappings({@Mapping( source = "email" , target = "email"),
                @Mapping(source = "addressLine",target = "address.addressLine"),
                @Mapping(source = "country",target = "address.country"),
