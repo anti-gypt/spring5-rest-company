@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<fieldset>
+    <legend>Recruitment</legend>
+    <form th:object="${recruitment}">
+        <table width="450" border="1" align="center">
+            <tr>
+                <td width="150" align="left">
+                    <label> FirstName </label>
+                </td>
+                <td th:text="${recruitment.firstName}">omid</td>
+            </tr>
+            <tr>
+                <td width="150" align="left">
+                    <label> LastName </label>
+                </td>
+                <td th:text="${recruitment.lastName}">joukar</td>
+            </tr>
+
+            <tr>
+                <td width="150" align="left">
+                    <label> Title </label>
+                </td>
+                <td th:text="${recruitment.title}">ing</td>
+            </tr>
+            <tr>
+                <td width="150" align="left">
+                    <label> Email </label>
+                </td>
+                <td th:text="${recruitment.email}">omid@joukar.com</td>
+            </tr>
+             <tr>
+                 <td width="150" align="left">
+                     <label> Apply Date </label>
+                 </td>
+                 <td th:text="${recruitment.applicationDate}">12.2.2020</td>
+             </tr>
+            <tr>
+                <td width="150" align="left">
+                    <lablel> BirthDate  </lablel>
+                </td>
+                <td th:text="${recruitment.birthDate}">12.2.2020</td>
+            </tr>
+            <tr>
+                <td width="150" align="left" valign="top">
+                    <label>Adress </label>
+                </td>
+                <td>
+	 			<textarea th:text="${recruitment.addressLine}" rows="5" cols="35">Wien</textarea>
+                </td>
+            </tr>
+            <!--  ---------------------------------------------------------------------------- -->
+
+            <tr>
+                <td width="150" align="left">
+                    <label>Gender</label>
+                </td>
+                <td th:text="${recruitment.gender}">MALE</td>
+            </tr>
+
+            <!--  ---------------------------------------------------------------------------- -->
+
+            <tr>
+                <td width="150" align="left">
+                    <label>Country</label>
+                </td>
+                <td th:text="${recruitment.country}">Austria</td>
+            </tr>
+
+            <!--  ---------------------------------------------------------------------------- -->
+
+            <tr>
+                <td width="150" align="left">
+                    <label>Region</label>
+                </td>
+                <td th:text="${recruitment.region}">liesing</td>
+            </tr>
+            <tr>
+                <td width="150" align="left">
+                    <label>City</label>
+                </td>
+                <td th:text="${recruitment.city}">wien</td>
+            </tr>
+
+            <tr>
+                <td width="150" align="left">
+                    <label> PostalCode </label>
+                </td>
+                <td th:text="${recruitment.postalCode}">1230</td>
+            </tr>
+
+            <tr>
+                <td width="150" align="left">
+                    <label> HomePhone </label>
+                </td>
+                <td th:text="${recruitment.homePhone}">123</td>
+            </tr>
+
+            <tr>
+                <td width="150" align="left">
+                    <label> MobilePhone </label>
+                </td>
+                <td th:text="${recruitment.mobilePhone}">123</td>
+            </tr>
+            <tr>
+                <td width="150" align="left">
+                    <label>Photo</label>
+                </td>
+                <td>
+                    <input type="file" th:field="*{photo}">
+                </td>
+            </tr>
+            <tr>
+                <td width="150" align="left">
+                    <label>CV </label>
+                </td>
+                <td>
+                    <input type="file" th:field="*{cv}">
+                </td>
+            </tr>
+            <tr>
+                <td width="150" align="left">
+                    <lable> DesierdSalary </lable>
+                </td>
+                <td th:text="${recruitment.desiredSalary}">123</td>
+            </tr>
+            <tr>
+                <td width="150" align="left" valign="top">
+                    <lable>Detail</lable>
+                </td>
+                <td>
+	 			<textarea rows="5" cols="35" th:text="${recruitment.detail}">
+                thats my show page
+	 			</textarea>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+</fieldset>
+
+</body>
+</html>

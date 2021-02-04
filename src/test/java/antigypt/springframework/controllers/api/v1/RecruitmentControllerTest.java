@@ -17,13 +17,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.io.IOException;
 import java.time.LocalDate;
-
-import static antigypt.springframework.controllers.api.v1.AbstractRestControllerTest.asJsonString;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,6 +74,44 @@ class RecruitmentControllerTest {
     }
 
     @Test
+    void showRecruitmentDetails() throws Exception {
+        RecruitmentDTO retRec  = new RecruitmentDTO();
+        retRec.setAddressLine(ADDRESS_LINE);
+        retRec.setApplicationDate(APPLICATION_DATE);
+        retRec.setBirthDate(BIRTH_DATE);
+        retRec.setCity(CITY);
+        retRec.setCountry(COUNTRY);
+        retRec.setDesiredSalary(DESIRED_SALARY);
+        retRec.setCv(getBytes);
+        retRec.setDetail(DETAIL);
+        retRec.setEmail(EMAIL);
+        retRec.setFirstName(FIRST_NAME);
+        retRec.setGender(GENDER);
+        retRec.setHomePhone(HOME_PHONE);
+        retRec.setLastName(LAST_NAME);
+        retRec.setMobilePhone(MOBILE_PHONE);
+        retRec.setPhoto(getBytes);
+        retRec.setPostalCode(POSTAL_CODE);
+        retRec.setRegion(REGION);
+        retRec.setTitle(TITLE);
+        retRec.setRecruitmentUrl(RecruitmentController.BASE_URL+"/1");
+        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(retRec);
+        mockMvc.perform(get(RecruitmentController.BASE_URL+"/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name(RecruitmentController.RECRUITMENT_SHOW))
+                .andExpect(model().attributeExists("recruitment"))
+                .andExpect(model().attribute("recruitment",
+                        hasProperty("firstName", equalTo(FIRST_NAME))))
+                .andExpect(model().attribute("recruitment",
+                        hasProperty("lastName", equalTo(LAST_NAME))))
+                .andExpect(model().attribute("recruitment",
+                        hasProperty("recruitmentUrl", equalTo(RecruitmentController.BASE_URL+"/1"))))
+                .andExpect(model().attribute("recruitment"
+                        ,hasProperty("desiredSalary",  equalTo(DESIRED_SALARY))));
+
+    }
+
+    @Test
     void processCreationForm() throws Exception {
 
         RecruitmentDTO retRec  = new RecruitmentDTO();
@@ -103,9 +140,11 @@ class RecruitmentControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         .param("firstName" , "Omid")
         .param("lastName" , "Jouakr"))
-                .andExpect(status().isCreated())
-                .andExpect(view().name(RecruitmentController.RECRUITMENT_SHOW));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:"+RecruitmentController.BASE_URL+"/1"));
         verify(recruitmentService,times(1)).createNewRecruitmnet(any());
 
     }
+
+
 }

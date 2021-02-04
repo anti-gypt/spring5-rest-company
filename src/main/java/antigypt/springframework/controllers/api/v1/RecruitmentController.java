@@ -5,6 +5,7 @@ import antigypt.springframework.api.v1.model.RecruitmentDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -25,11 +26,19 @@ public class RecruitmentController {
         return CREATE_UPDATE_RECRUITMENT_FORM;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public String processCreationForm(@ModelAttribute RecruitmentDTO recruitmentDTO){
-        RecruitmentDTO savedRecruitmentDTO = recruitmentService.createNewRecruitmnet(recruitmentDTO);
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String showRecruitmentDetails(@PathVariable Long id, Model model){
+        model.addAttribute("recruitment", recruitmentService.findRecruitmentById(id));
         return RECRUITMENT_SHOW;
     }
 
+    @PostMapping
+    public String processCreationForm(@ModelAttribute RecruitmentDTO recruitmentDTO, BindingResult result){
+        if (result.hasErrors()){
+
+        }
+        RecruitmentDTO savedRecruitmentDTO = recruitmentService.createNewRecruitmnet(recruitmentDTO);
+        return "redirect:/api/v1/recruitments/"+savedRecruitmentDTO.getRecruitmentUrl().split("/")[4];
+    }
 }
