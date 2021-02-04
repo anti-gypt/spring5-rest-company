@@ -111,7 +111,8 @@
                 <td width="150" align="left">
                     <label>Photo</label>
                 </td>
-                <td><img th:src="@{${recruitment.recruitmentUrl}+'/showimage'}" src="#" width="200px" height="200px">
+                <td>
+                    <img th:src="@{${recruitment.recruitmentUrl}+'/showimage'}" src="#" width="200px" height="200px">
                 </td>
             </tr>
             <tr>
@@ -119,7 +120,9 @@
                     <label>CV </label>
                 </td>
                 <td>
-                    <input type="file" th:field="*{cv}">
+                    <a th:href="@{${recruitment.recruitmentUrl}+'/processcv'}">
+                        <embed th:src="@{${recruitment.recruitmentUrl}+'/showcv'}" src="#" type="application/pdf" width="200px" height="200px" />
+                    </a>
                 </td>
             </tr>
             <tr>
