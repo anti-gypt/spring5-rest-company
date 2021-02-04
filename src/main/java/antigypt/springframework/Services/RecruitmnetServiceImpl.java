@@ -7,6 +7,8 @@ import antigypt.springframework.domain.Recruitment;
 import antigypt.springframework.repositories.RecruitmentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class RecruitmnetServiceImpl implements RecruitmentService {
@@ -18,6 +20,17 @@ public class RecruitmnetServiceImpl implements RecruitmentService {
         this.recruitmentRepository = recruitmentRepository;
         this.recruitmentMapper = recruitmentMapper;
     }
+    @Override
+    public RecruitmentDTO findRecruitmentById(Long id) {
+        Optional<Recruitment> recruitmentOptional = recruitmentRepository.findById(id);
+        if (!recruitmentOptional.isPresent()){
+
+        }
+        Recruitment recruitment = recruitmentOptional.get();
+        RecruitmentDTO returnedDTO = recruitmentMapper.recruitmentToRecruitmentDTO(recruitment);
+        returnedDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/"+recruitment.getRecruitmentId());
+        return returnedDTO;
+    }
 
     @Override
     public RecruitmentDTO createNewRecruitmnet(RecruitmentDTO recruitmentDTO) {
@@ -28,4 +41,6 @@ public class RecruitmnetServiceImpl implements RecruitmentService {
         recruitmentDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/" +savedRecruitment.getRecruitmentId());
         return recruitmentDTO ;
     }
+
+
 }

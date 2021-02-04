@@ -17,8 +17,11 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 class RecruitmnetServiceImplTest {
@@ -112,5 +115,40 @@ class RecruitmnetServiceImplTest {
        assertEquals(savedReturnedDTO.getPhoto().length,SENDED_IMAGE.getBytes().length);
        assertEquals(savedReturnedDTO.getFirstName(),saveRec.getFirstName());
        assertEquals(RecruitmentController.BASE_URL+"/1",savedReturnedDTO.getRecruitmentUrl());
+    }
+
+    @SneakyThrows
+    @Test
+    void findRecruitmentById() {
+        Address address = new Address();
+        address.setAddressLine(ADDRESS_LINE);
+        address.setCity(CITY);
+        address.setCountry(COUNTRY);
+        address.setPostalCode(POSTAL_CODE);
+        address.setRegion(REGION);
+        Recruitment foundedRec  = new Recruitment();
+        foundedRec.setRecruitmentId(1L);
+        foundedRec.setAddress(address);
+        foundedRec.setApplicationDate(LocalDate.now());
+        foundedRec.setBirthDate(LocalDate.now());
+        foundedRec.setDesiredSalary(DESIRED_SALARY);
+        foundedRec.setCv(getBytes);
+        foundedRec.setDetail(DETAIL);
+        foundedRec.setEmail(EMAIL);
+        foundedRec.setFirstName(FIRST_NAME);
+        foundedRec.setGender(Gender.MALE);
+        foundedRec.setHomePhone(HOME_PHONE);
+        foundedRec.setLastName(LAST_NAME);
+        foundedRec.setMobilePhone(MOBILE_PHONE);
+        foundedRec.setPhoto(getBytes);
+        foundedRec.setTitle(Title.ING);
+        when(recruitmentRepository.findById(anyLong())).thenReturn(Optional.of(foundedRec));
+        RecruitmentDTO returnedDTO = recruitmentService.findRecruitmentById(1L);
+        assertEquals(returnedDTO.getCv().length,SENDED_CV.getBytes().length);
+        assertEquals(returnedDTO.getPhoto().length,SENDED_IMAGE.getBytes().length);
+        assertEquals(returnedDTO.getFirstName(),foundedRec.getFirstName());
+        assertEquals(RecruitmentController.BASE_URL+"/1",returnedDTO.getRecruitmentUrl());
+
+
     }
 }
