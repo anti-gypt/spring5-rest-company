@@ -7,6 +7,7 @@ import antigypt.springframework.domain.Address;
 import antigypt.springframework.domain.Gender;
 import antigypt.springframework.domain.Recruitment;
 import antigypt.springframework.domain.Title;
+import antigypt.springframework.exceptions.ResourceNotFoundException;
 import antigypt.springframework.repositories.RecruitmentRepository;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -148,7 +149,13 @@ class RecruitmnetServiceImplTest {
         assertEquals(returnedDTO.getPhoto().length,SENDED_IMAGE.getBytes().length);
         assertEquals(returnedDTO.getFirstName(),foundedRec.getFirstName());
         assertEquals(RecruitmentController.BASE_URL+"/1",returnedDTO.getRecruitmentUrl());
+    }
 
+    @Test
+    public void findRecruitmentByIdNotFound()throws Exception{
+        when(recruitmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+        Exception ex = assertThrows(ResourceNotFoundException.class,()->{recruitmentService.findRecruitmentById(2L);});
+        assertEquals("Id is invalid : " + 2L,ex.getMessage() );
 
     }
 }
