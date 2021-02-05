@@ -6,7 +6,6 @@ import antigypt.springframework.api.v1.model.RecruitmentDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -56,6 +55,9 @@ class RecruitmentControllerTest {
     RecruitmentController recruitmentController;
     MockMvc mockMvc;
     Byte[] getBytes;
+
+    RecruitmentDTO returnedRecruitmentDTO;
+    
     @BeforeEach
     void setUp() throws IOException {
         mockMvc = MockMvcBuilders.standaloneSetup(recruitmentController).build();
@@ -64,6 +66,27 @@ class RecruitmentControllerTest {
         for (byte b : SENDED_IMAGE.getBytes()){
             getBytes[i++] = b;
         }
+        
+        returnedRecruitmentDTO = new RecruitmentDTO();
+        returnedRecruitmentDTO.setAddressLine(ADDRESS_LINE);
+        returnedRecruitmentDTO.setApplicationDate(APPLICATION_DATE);
+        returnedRecruitmentDTO.setBirthDate(BIRTH_DATE);
+        returnedRecruitmentDTO.setCity(CITY);
+        returnedRecruitmentDTO.setCountry(COUNTRY);
+        returnedRecruitmentDTO.setDesiredSalary(DESIRED_SALARY);
+        returnedRecruitmentDTO.setCv(getBytes);
+        returnedRecruitmentDTO.setDetail(DETAIL);
+        returnedRecruitmentDTO.setEmail(EMAIL);
+        returnedRecruitmentDTO.setFirstName(FIRST_NAME);
+        returnedRecruitmentDTO.setGender(GENDER);
+        returnedRecruitmentDTO.setHomePhone(HOME_PHONE);
+        returnedRecruitmentDTO.setLastName(LAST_NAME);
+        returnedRecruitmentDTO.setMobilePhone(MOBILE_PHONE);
+        returnedRecruitmentDTO.setPhoto(getBytes);
+        returnedRecruitmentDTO.setPostalCode(POSTAL_CODE);
+        returnedRecruitmentDTO.setRegion(REGION);
+        returnedRecruitmentDTO.setTitle(TITLE);
+        returnedRecruitmentDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/1");
     }
 
     @Test
@@ -76,27 +99,7 @@ class RecruitmentControllerTest {
 
     @Test
     void showRecruitmentDetails() throws Exception {
-        RecruitmentDTO retRec  = new RecruitmentDTO();
-        retRec.setAddressLine(ADDRESS_LINE);
-        retRec.setApplicationDate(APPLICATION_DATE);
-        retRec.setBirthDate(BIRTH_DATE);
-        retRec.setCity(CITY);
-        retRec.setCountry(COUNTRY);
-        retRec.setDesiredSalary(DESIRED_SALARY);
-        retRec.setCv(getBytes);
-        retRec.setDetail(DETAIL);
-        retRec.setEmail(EMAIL);
-        retRec.setFirstName(FIRST_NAME);
-        retRec.setGender(GENDER);
-        retRec.setHomePhone(HOME_PHONE);
-        retRec.setLastName(LAST_NAME);
-        retRec.setMobilePhone(MOBILE_PHONE);
-        retRec.setPhoto(getBytes);
-        retRec.setPostalCode(POSTAL_CODE);
-        retRec.setRegion(REGION);
-        retRec.setTitle(TITLE);
-        retRec.setRecruitmentUrl(RecruitmentController.BASE_URL+"/1");
-        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(retRec);
+        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(returnedRecruitmentDTO);
         mockMvc.perform(get(RecruitmentController.BASE_URL+"/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(RecruitmentController.RECRUITMENT_SHOW))
@@ -114,29 +117,7 @@ class RecruitmentControllerTest {
 
     @Test
     void processCreationForm() throws Exception {
-
-        RecruitmentDTO retRec  = new RecruitmentDTO();
-        retRec.setAddressLine(ADDRESS_LINE);
-        retRec.setApplicationDate(APPLICATION_DATE);
-        retRec.setBirthDate(BIRTH_DATE);
-        retRec.setCity(CITY);
-        retRec.setCountry(COUNTRY);
-        retRec.setDesiredSalary(DESIRED_SALARY);
-        retRec.setCv(getBytes);
-        retRec.setDetail(DETAIL);
-        retRec.setEmail(EMAIL);
-        retRec.setFirstName(FIRST_NAME);
-        retRec.setGender(GENDER);
-        retRec.setHomePhone(HOME_PHONE);
-        retRec.setLastName(LAST_NAME);
-        retRec.setMobilePhone(MOBILE_PHONE);
-        retRec.setPhoto(getBytes);
-        retRec.setPostalCode(POSTAL_CODE);
-        retRec.setRegion(REGION);
-        retRec.setTitle(TITLE);
-        retRec.setRecruitmentUrl(RecruitmentController.BASE_URL+"/1");
-        ArgumentCaptor<RecruitmentDTO> captor = ArgumentCaptor.forClass(RecruitmentDTO.class);
-        when(recruitmentService.createNewRecruitmnet(any(RecruitmentDTO.class))).thenReturn(retRec);
+        when(recruitmentService.createNewRecruitmnet(any(RecruitmentDTO.class))).thenReturn(returnedRecruitmentDTO);
         mockMvc.perform(post(RecruitmentController.BASE_URL)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         .param("firstName" , "Omid")
@@ -150,10 +131,7 @@ class RecruitmentControllerTest {
 
     @Test
     void showRecruitmentImage() throws Exception {
-        RecruitmentDTO returnedDTO = new RecruitmentDTO();
-        returnedDTO.setRecruitmentUrl("/api/v1/recruitments/1");
-        returnedDTO.setPhoto(getBytes);
-        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(returnedDTO);
+        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(returnedRecruitmentDTO);
         MockHttpServletResponse response = mockMvc.perform(get("/api/v1/recruitments/1/showimage"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
@@ -165,10 +143,7 @@ class RecruitmentControllerTest {
 
     @Test
     void showRecruitmentCV() throws Exception {
-        RecruitmentDTO returnedDTO = new RecruitmentDTO();
-        returnedDTO.setRecruitmentUrl("/api/v1/recruitments/1");
-        returnedDTO.setCv(getBytes);
-        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(returnedDTO);
+        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(returnedRecruitmentDTO);
         MockHttpServletResponse response = mockMvc.perform(get("/api/v1/recruitments/1/showcv"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
@@ -179,27 +154,7 @@ class RecruitmentControllerTest {
 
     @Test
     void processShowRecruitmentCV() throws Exception {
-        RecruitmentDTO retRec  = new RecruitmentDTO();
-        retRec.setAddressLine(ADDRESS_LINE);
-        retRec.setApplicationDate(APPLICATION_DATE);
-        retRec.setBirthDate(BIRTH_DATE);
-        retRec.setCity(CITY);
-        retRec.setCountry(COUNTRY);
-        retRec.setDesiredSalary(DESIRED_SALARY);
-        retRec.setCv(getBytes);
-        retRec.setDetail(DETAIL);
-        retRec.setEmail(EMAIL);
-        retRec.setFirstName(FIRST_NAME);
-        retRec.setGender(GENDER);
-        retRec.setHomePhone(HOME_PHONE);
-        retRec.setLastName(LAST_NAME);
-        retRec.setMobilePhone(MOBILE_PHONE);
-        retRec.setPhoto(getBytes);
-        retRec.setPostalCode(POSTAL_CODE);
-        retRec.setRegion(REGION);
-        retRec.setTitle(TITLE);
-        retRec.setRecruitmentUrl(RecruitmentController.BASE_URL+"/1");
-        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(retRec);
+        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(returnedRecruitmentDTO);
         mockMvc.perform(get(RecruitmentController.BASE_URL+"/1/processcv"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(RecruitmentController.RECRUITMENTS_RECRUITMENT_CV))

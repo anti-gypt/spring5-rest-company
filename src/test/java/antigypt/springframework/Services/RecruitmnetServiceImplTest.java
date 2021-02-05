@@ -52,6 +52,12 @@ class RecruitmnetServiceImplTest {
     RecruitmentMapper recruitmentMapper = RecruitmentMapper.INSTANCE;
     RecruitmnetServiceImpl recruitmentService;
     Byte[] getBytes;
+
+    Address address;
+    Recruitment savedRecruitment;
+    RecruitmentDTO returnedRecruitmentDTO;
+    Recruitment foundedRecruitment;
+
     @SneakyThrows
     @BeforeEach
     void setUp() {
@@ -63,91 +69,87 @@ class RecruitmnetServiceImplTest {
             getBytes[i++] = b;
         }
 
+        address = new Address();
+        address.setAddressLine(ADDRESS_LINE);
+        address.setCity(CITY);
+        address.setCountry(COUNTRY);
+        address.setPostalCode(POSTAL_CODE);
+        address.setRegion(REGION);
+
+        savedRecruitment = new Recruitment();
+        savedRecruitment.setRecruitmentId(1L);
+        savedRecruitment.setAddress(address);
+        savedRecruitment.setApplicationDate(LocalDate.now());
+        savedRecruitment.setBirthDate(LocalDate.now());
+        savedRecruitment.setDesiredSalary(DESIRED_SALARY);
+        savedRecruitment.setCv(getBytes);
+        savedRecruitment.setDetail(DETAIL);
+        savedRecruitment.setEmail(EMAIL);
+        savedRecruitment.setFirstName(FIRST_NAME);
+        savedRecruitment.setGender(Gender.MALE);
+        savedRecruitment.setHomePhone(HOME_PHONE);
+        savedRecruitment.setLastName(LAST_NAME);
+        savedRecruitment.setMobilePhone(MOBILE_PHONE);
+        savedRecruitment.setPhoto(getBytes);
+        savedRecruitment.setTitle(Title.ING);
+
+        foundedRecruitment = new Recruitment();
+        foundedRecruitment.setRecruitmentId(1L);
+        foundedRecruitment.setAddress(address);
+        foundedRecruitment.setApplicationDate(LocalDate.now());
+        foundedRecruitment.setBirthDate(LocalDate.now());
+        foundedRecruitment.setDesiredSalary(DESIRED_SALARY);
+        foundedRecruitment.setCv(getBytes);
+        foundedRecruitment.setDetail(DETAIL);
+        foundedRecruitment.setEmail(EMAIL);
+        foundedRecruitment.setFirstName(FIRST_NAME);
+        foundedRecruitment.setGender(Gender.MALE);
+        foundedRecruitment.setHomePhone(HOME_PHONE);
+        foundedRecruitment.setLastName(LAST_NAME);
+        foundedRecruitment.setMobilePhone(MOBILE_PHONE);
+        foundedRecruitment.setPhoto(getBytes);
+        foundedRecruitment.setTitle(Title.ING);
+
+        returnedRecruitmentDTO  = new RecruitmentDTO();
+        returnedRecruitmentDTO.setAddressLine(ADDRESS_LINE);
+        returnedRecruitmentDTO.setApplicationDate(APPLICATION_DATE);
+        returnedRecruitmentDTO.setBirthDate(BIRTH_DATE);
+        returnedRecruitmentDTO.setCity(CITY);
+        returnedRecruitmentDTO.setCountry(COUNTRY);
+        returnedRecruitmentDTO.setDesiredSalary(DESIRED_SALARY);
+        returnedRecruitmentDTO.setCv(getBytes);
+        returnedRecruitmentDTO.setDetail(DETAIL);
+        returnedRecruitmentDTO.setEmail(EMAIL);
+        returnedRecruitmentDTO.setFirstName(FIRST_NAME);
+        returnedRecruitmentDTO.setGender(GENDER);
+        returnedRecruitmentDTO.setHomePhone(HOME_PHONE);
+        returnedRecruitmentDTO.setLastName(LAST_NAME);
+        returnedRecruitmentDTO.setMobilePhone(MOBILE_PHONE);
+        returnedRecruitmentDTO.setPhoto(getBytes);
+        returnedRecruitmentDTO.setPostalCode(POSTAL_CODE);
+        returnedRecruitmentDTO.setRegion(REGION);
+        returnedRecruitmentDTO.setTitle(TITLE);
     }
 
     @Test
     void createNewRecruitmnet() throws IOException {
 
-       Address address = new Address();
-       address.setAddressLine(ADDRESS_LINE);
-       address.setCity(CITY);
-       address.setCountry(COUNTRY);
-       address.setPostalCode(POSTAL_CODE);
-       address.setRegion(REGION);
-       Recruitment saveRec  = new Recruitment();
-       saveRec.setRecruitmentId(1L);
-       saveRec.setAddress(address);
-       saveRec.setApplicationDate(LocalDate.now());
-       saveRec.setBirthDate(LocalDate.now());
-       saveRec.setDesiredSalary(DESIRED_SALARY);
-       saveRec.setCv(getBytes);
-       saveRec.setDetail(DETAIL);
-       saveRec.setEmail(EMAIL);
-       saveRec.setFirstName(FIRST_NAME);
-       saveRec.setGender(Gender.MALE);
-       saveRec.setHomePhone(HOME_PHONE);
-       saveRec.setLastName(LAST_NAME);
-       saveRec.setMobilePhone(MOBILE_PHONE);
-       saveRec.setPhoto(getBytes);
-       saveRec.setTitle(Title.ING);
-
-       RecruitmentDTO retRec  = new RecruitmentDTO();
-       retRec.setAddressLine(ADDRESS_LINE);
-       retRec.setApplicationDate(APPLICATION_DATE);
-       retRec.setBirthDate(BIRTH_DATE);
-       retRec.setCity(CITY);
-       retRec.setCountry(COUNTRY);
-       retRec.setDesiredSalary(DESIRED_SALARY);
-       retRec.setCv(getBytes);
-       retRec.setDetail(DETAIL);
-       retRec.setEmail(EMAIL);
-       retRec.setFirstName(FIRST_NAME);
-       retRec.setGender(GENDER);
-       retRec.setHomePhone(HOME_PHONE);
-       retRec.setLastName(LAST_NAME);
-       retRec.setMobilePhone(MOBILE_PHONE);
-       retRec.setPhoto(getBytes);
-       retRec.setPostalCode(POSTAL_CODE);
-       retRec.setRegion(REGION);
-       retRec.setTitle(TITLE);
-       when(recruitmentRepository.save(any(Recruitment.class))).thenReturn(saveRec);
-       RecruitmentDTO savedReturnedDTO = recruitmentService.createNewRecruitmnet(retRec);
+       when(recruitmentRepository.save(any(Recruitment.class))).thenReturn(savedRecruitment);
+       RecruitmentDTO savedReturnedDTO = recruitmentService.createNewRecruitmnet(returnedRecruitmentDTO);
        assertEquals(savedReturnedDTO.getCv().length,SENDED_CV.getBytes().length);
        assertEquals(savedReturnedDTO.getPhoto().length,SENDED_IMAGE.getBytes().length);
-       assertEquals(savedReturnedDTO.getFirstName(),saveRec.getFirstName());
+       assertEquals(savedReturnedDTO.getFirstName(),savedRecruitment.getFirstName());
        assertEquals(RecruitmentController.BASE_URL+"/1",savedReturnedDTO.getRecruitmentUrl());
     }
 
     @SneakyThrows
     @Test
     void findRecruitmentById() {
-        Address address = new Address();
-        address.setAddressLine(ADDRESS_LINE);
-        address.setCity(CITY);
-        address.setCountry(COUNTRY);
-        address.setPostalCode(POSTAL_CODE);
-        address.setRegion(REGION);
-        Recruitment foundedRec  = new Recruitment();
-        foundedRec.setRecruitmentId(1L);
-        foundedRec.setAddress(address);
-        foundedRec.setApplicationDate(LocalDate.now());
-        foundedRec.setBirthDate(LocalDate.now());
-        foundedRec.setDesiredSalary(DESIRED_SALARY);
-        foundedRec.setCv(getBytes);
-        foundedRec.setDetail(DETAIL);
-        foundedRec.setEmail(EMAIL);
-        foundedRec.setFirstName(FIRST_NAME);
-        foundedRec.setGender(Gender.MALE);
-        foundedRec.setHomePhone(HOME_PHONE);
-        foundedRec.setLastName(LAST_NAME);
-        foundedRec.setMobilePhone(MOBILE_PHONE);
-        foundedRec.setPhoto(getBytes);
-        foundedRec.setTitle(Title.ING);
-        when(recruitmentRepository.findById(anyLong())).thenReturn(Optional.of(foundedRec));
+        when(recruitmentRepository.findById(anyLong())).thenReturn(Optional.of(foundedRecruitment));
         RecruitmentDTO returnedDTO = recruitmentService.findRecruitmentById(1L);
         assertEquals(returnedDTO.getCv().length,SENDED_CV.getBytes().length);
         assertEquals(returnedDTO.getPhoto().length,SENDED_IMAGE.getBytes().length);
-        assertEquals(returnedDTO.getFirstName(),foundedRec.getFirstName());
+        assertEquals(returnedDTO.getFirstName(),foundedRecruitment.getFirstName());
         assertEquals(RecruitmentController.BASE_URL+"/1",returnedDTO.getRecruitmentUrl());
     }
 
