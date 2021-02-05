@@ -10,7 +10,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -39,13 +41,37 @@ public class RecruitmnetServiceImpl implements RecruitmentService {
     }
 
     @Override
-    public RecruitmentDTO createNewRecruitmnet(RecruitmentDTO recruitmentDTO) {
+    public List<RecruitmentDTO> getAllRecruitments() {
+        return recruitmentRepository.findAll().stream()
+                .map(recruitment -> {
+                    RecruitmentDTO returnedDto = recruitmentMapper.recruitmentToRecruitmentDTO(recruitment);
+                    returnedDto.setRecruitmentUrl(RecruitmentController.BASE_URL+"/"+recruitment.getRecruitmentId());
+                    return returnedDto;
+                }).collect(Collectors.toList());
+    }
 
+    @Override
+    public boolean isNew(RecruitmentDTO recruitmentDTO) {
+        boolean isObjectNew = true;
+        for (RecruitmentDTO recruitmentDTO1 : getAllRecruitments()) {
+            if (recruitmentDTO.getFirstName().equals(recruitmentDTO1.getFirstName()) &&
+                    recruitmentDTO.getLastName().equals(recruitmentDTO1.getLastName()) &&
+                    recruitmentDTO.getBirthDate().equals(recruitmentDTO1.getBirthDate())) {
+                isObjectNew = false;
+                break;
+            }
+        }
+        return isObjectNew;
+    }
+
+
+    @Override
+    public RecruitmentDTO createNewRecruitmnet(RecruitmentDTO recruitmentDTO) {
         Recruitment toBeSaved = recruitmentMapper.recruitmnetDTOToRecruitment(recruitmentDTO);
         Recruitment savedRecruitment = recruitmentRepository.save(toBeSaved);
         RecruitmentDTO returnedDTO = recruitmentMapper.recruitmentToRecruitmentDTO(savedRecruitment);
-        recruitmentDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/" +savedRecruitment.getRecruitmentId());
-        return recruitmentDTO ;
+        returnedDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/" +savedRecruitment.getRecruitmentId());
+        return returnedDTO ;
     }
 
 

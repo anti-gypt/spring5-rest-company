@@ -18,6 +18,8 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -159,5 +161,41 @@ class RecruitmnetServiceImplTest {
         Exception ex = assertThrows(ResourceNotFoundException.class,()->{recruitmentService.findRecruitmentById(2L);});
         assertEquals("Id is invalid : " + 2L,ex.getMessage() );
 
+    }
+
+    @Test
+    void getAllRecruitments() {
+        List<RecruitmentDTO> recruitmentDTOList = new ArrayList<>();
+        List<Recruitment> recruitmentList = new ArrayList<>();
+        recruitmentList.add(foundedRecruitment);
+        recruitmentList.add(savedRecruitment);
+        when(recruitmentRepository.findAll()).thenReturn(recruitmentList);
+        recruitmentDTOList.addAll(recruitmentService.getAllRecruitments());
+        assertNotNull(recruitmentDTOList);
+        assertEquals(recruitmentList.size(),recruitmentDTOList.size());
+
+    }
+
+    @Test
+    void isNew() {
+        List<Recruitment> recruitmentList = new ArrayList<>();
+        recruitmentList.add(foundedRecruitment);
+        recruitmentList.add(savedRecruitment);
+        when(recruitmentRepository.findAll()).thenReturn(recruitmentList);
+        boolean isNewObject = recruitmentService.isNew(returnedRecruitmentDTO);
+        assertEquals(false,isNewObject);
+    }
+    @Test
+    void isNewTrue() {
+        RecruitmentDTO recruitmentDTO = new RecruitmentDTO();
+        recruitmentDTO.setFirstName("Ali");
+        recruitmentDTO.setLastName("Joukar");
+        recruitmentDTO.setBirthDate("05.09.1989");
+        List<Recruitment> recruitmentList = new ArrayList<>();
+        recruitmentList.add(foundedRecruitment);
+        recruitmentList.add(savedRecruitment);
+        when(recruitmentRepository.findAll()).thenReturn(recruitmentList);
+        boolean isNewObject = recruitmentService.isNew(recruitmentDTO);
+        assertEquals(true,isNewObject);
     }
 }
