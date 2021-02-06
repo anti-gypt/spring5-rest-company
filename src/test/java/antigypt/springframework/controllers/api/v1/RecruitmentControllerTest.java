@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -132,6 +131,18 @@ class RecruitmentControllerTest {
     }
 
     @Test
+    void showAllRecruitments() throws Exception {
+        List<RecruitmentDTO> recruitmentDTOList = new ArrayList<>();
+        recruitmentDTOList.add(returnedRecruitmentDTO);
+        when(recruitmentService.getAllRecruitments()).thenReturn(recruitmentDTOList);
+        mockMvc.perform(get("/api/v1/recruitments"))
+                .andExpect(status().isOk())
+                .andExpect(view().name(RecruitmentController.RECRUITMENT_SHOW_ALL))
+                .andExpect(model().attributeExists("recruitments"))
+                .andExpect(model().attribute("recruitments",hasSize(1)));
+    }
+
+    @Test
     void processCreationForm() throws Exception {
         when(recruitmentService.createNewRecruitmnet(any())).thenReturn(returnedRecruitmentDTO);
         when(recruitmentService.isNew(any())).thenReturn(true);
@@ -202,4 +213,6 @@ class RecruitmentControllerTest {
                 .andExpect(model().attribute("recruitment"
                         ,hasProperty("desiredSalary",  equalTo(DESIRED_SALARY))));
     }
+
+
 }

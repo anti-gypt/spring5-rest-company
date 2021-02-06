@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>FIRST NAME</th>
+        <th>LAST NAME</th>
+        <th>EMAIL</th>
+        <th>VIEW</th>
+        <th>UPDATE</th>
+        <th>DELETE</th>
+    </tr>
+    <tr th:each="recruitment : ${recruitments}">
+        <td th:text="${recruitment.firstName}">Omid</td>
+        <td th:text="${recruitment.lastName}">Joukar</td>
+        <td th:text="${recruitment.email}">joukaromid6@gmail.com</td>
+        <td><a th:href="@{${recruitment.recruitmentUrl}" href="#">View</a></td>
+        <td><a th:href="@{${recruitment.recruitmentUrl}+'/update'}" href="#">Update</a></td>
+        <td><a th:href="@{${recruitment.recruitmentUrl}+'/delete'}" href="#">Delete</a></td>
+    </tr>
+</table>
+
+</body>
+</html>
