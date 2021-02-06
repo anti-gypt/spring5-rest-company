@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
@@ -41,9 +42,13 @@ public class RecruitmentController {
     }
 
     @PostMapping
-    public String processCreationForm(@ModelAttribute RecruitmentDTO recruitmentDTO, BindingResult result){
-        if (result.hasErrors()){
-
+    public String processCreationForm(@ModelAttribute RecruitmentDTO recruitmentDTO, BindingResult result,Model model){
+        if (recruitmentService.isNew(recruitmentDTO) == false) {
+            result.rejectValue("firstName" , "duplicate" , "already exists");
+            if (result.hasErrors()) {
+                model.addAttribute("recruitmentForm",recruitmentDTO);
+                return CREATE_UPDATE_RECRUITMENT_FORM;
+            }
         }
         RecruitmentDTO savedRecruitmentDTO = recruitmentService.createNewRecruitmnet(recruitmentDTO);
         return "redirect:/api/v1/recruitments/"+savedRecruitmentDTO.getRecruitmentUrl().split("/")[4];

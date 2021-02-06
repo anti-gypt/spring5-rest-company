@@ -3,11 +3,14 @@ package antigypt.springframework.controllers.api.v1;
 import antigypt.springframework.Services.RecruitmentService;
 import antigypt.springframework.api.v1.model.RecruitmentDTO;
 
+import antigypt.springframework.domain.Recruitment;
+import antigypt.springframework.repositories.RecruitmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -17,6 +20,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,15 +57,19 @@ class RecruitmentControllerTest {
 
     @Mock
     RecruitmentService recruitmentService;
+    @Mock
+    RecruitmentRepository recruitmentRepository;
     @InjectMocks
     RecruitmentController recruitmentController;
     MockMvc mockMvc;
     Byte[] getBytes;
 
     RecruitmentDTO returnedRecruitmentDTO;
+    RecruitmentDTO recruitmentDTONotSame;
     
     @BeforeEach
     void setUp() throws IOException {
+
         mockMvc = MockMvcBuilders.standaloneSetup(recruitmentController).build();
         getBytes = new Byte[SENDED_IMAGE.getBytes().length];
         int i =0 ;
@@ -87,6 +97,12 @@ class RecruitmentControllerTest {
         returnedRecruitmentDTO.setRegion(REGION);
         returnedRecruitmentDTO.setTitle(TITLE);
         returnedRecruitmentDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/1");
+
+        recruitmentDTONotSame = new RecruitmentDTO();
+        recruitmentDTONotSame.setFirstName("Ali");
+        recruitmentDTONotSame.setLastName("Masoomi");
+        recruitmentDTONotSame.setBirthDate(LocalDate.now().toString());
+
     }
 
     @Test
@@ -117,16 +133,34 @@ class RecruitmentControllerTest {
 
     @Test
     void processCreationForm() throws Exception {
-        when(recruitmentService.createNewRecruitmnet(any(RecruitmentDTO.class))).thenReturn(returnedRecruitmentDTO);
+        when(recruitmentService.createNewRecruitmnet(any())).thenReturn(returnedRecruitmentDTO);
+        when(recruitmentService.isNew(any())).thenReturn(true);
         mockMvc.perform(post(RecruitmentController.BASE_URL)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-        .param("firstName" , "Omid")
-        .param("lastName" , "Jouakr"))
+        .param("firstName" , "Ali")
+        .param("lastName" , "Masoomi")
+        .param("birthDate" , LocalDate.now().toString()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:"+RecruitmentController.BASE_URL+"/1"));
         verify(recruitmentService,times(1)).createNewRecruitmnet(any());
 
     }
+    @Test
+    void processCreationFormRejected() throws Exception {
+        Recruitment recruitment = new Recruitment();
+        recruitment.setFirstName("Omid");
+        recruitment.setLastName("Joukar");
+        recruitment.setApplicationDate(LocalDate.now());
+        recruitmentRepository.save(recruitment);
+        mockMvc.perform(post(RecruitmentController.BASE_URL)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("firstName" , "Omid")
+                .param("lastName" , "Jouakr")
+                .param("applicationDate",LocalDate.now().toString()))
+                .andExpect(status().isOk())
+                .andExpect(view().name(RecruitmentController.CREATE_UPDATE_RECRUITMENT_FORM));
+    }
+
 
 
     @Test
