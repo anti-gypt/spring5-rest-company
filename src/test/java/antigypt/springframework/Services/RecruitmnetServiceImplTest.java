@@ -43,6 +43,16 @@ class RecruitmnetServiceImplTest {
     private static final String MOBILE_PHONE = "123";
     private static final String POSTAL_CODE = "1230";
     private static final String REGION = "Liesing";
+    private static final String UPDATED_ADDRESS_LINE = "Elisenstrasse 1";
+    private static final String UPDATED_COUNTRY = "German";
+    private static final String UPDATED_CITY = "Hamburg";
+    private static final String UPDATED_EMAIL = "ali@gmail.com";
+    private static final String UPDATED_FIRST_NAME = "Ali";
+    private static final String UPDATED_LAST_NAME = "Masoomi";
+    private static final String UPDATED_HOME_PHONE = "321";
+    private static final String UPDATED_MOBILE_PHONE = "321";
+    private static final String UPDATED_POSTAL_CODE = "1120";
+    private static final String UPDATED_REGION = "Wien mitte";
     private static final String TITLE = "ING";
     private static final MockMultipartFile SENDED_IMAGE =
             new MockMultipartFile("imagefile","imagefile","text.txt","this si a byte sample".getBytes());
@@ -56,9 +66,12 @@ class RecruitmnetServiceImplTest {
     Byte[] getBytes;
 
     Address address;
+    Address wantToUpdateAddress;
     Recruitment savedRecruitment;
     RecruitmentDTO returnedRecruitmentDTO;
+    RecruitmentDTO returnedUpdatedRecruitmentDTO;
     Recruitment foundedRecruitment;
+    Recruitment wantToUpdateRecruitment;
 
     @SneakyThrows
     @BeforeEach
@@ -77,6 +90,13 @@ class RecruitmnetServiceImplTest {
         address.setCountry(COUNTRY);
         address.setPostalCode(POSTAL_CODE);
         address.setRegion(REGION);
+
+        wantToUpdateAddress = new Address();
+        wantToUpdateAddress.setAddressLine(UPDATED_ADDRESS_LINE);
+        wantToUpdateAddress.setCity(UPDATED_CITY);
+        wantToUpdateAddress.setCountry(UPDATED_COUNTRY);
+        wantToUpdateAddress.setPostalCode(UPDATED_POSTAL_CODE);
+        wantToUpdateAddress.setRegion(UPDATED_REGION);
 
         savedRecruitment = new Recruitment();
         savedRecruitment.setRecruitmentId(1L);
@@ -112,6 +132,24 @@ class RecruitmnetServiceImplTest {
         foundedRecruitment.setPhoto(getBytes);
         foundedRecruitment.setTitle(Title.ING);
 
+
+        wantToUpdateRecruitment = new Recruitment();
+        wantToUpdateRecruitment.setRecruitmentId(1L);
+        wantToUpdateRecruitment.setAddress(wantToUpdateAddress);
+        wantToUpdateRecruitment.setApplicationDate(LocalDate.now());
+        wantToUpdateRecruitment.setBirthDate(LocalDate.now());
+        wantToUpdateRecruitment.setDesiredSalary(DESIRED_SALARY);
+        wantToUpdateRecruitment.setCv(getBytes);
+        wantToUpdateRecruitment.setDetail(DETAIL);
+        wantToUpdateRecruitment.setEmail(UPDATED_EMAIL);
+        wantToUpdateRecruitment.setFirstName(UPDATED_FIRST_NAME);
+        wantToUpdateRecruitment.setGender(Gender.MALE);
+        wantToUpdateRecruitment.setHomePhone(UPDATED_HOME_PHONE);
+        wantToUpdateRecruitment.setLastName(UPDATED_LAST_NAME);
+        wantToUpdateRecruitment.setMobilePhone(UPDATED_MOBILE_PHONE);
+        wantToUpdateRecruitment.setPhoto(getBytes);
+        wantToUpdateRecruitment.setTitle(Title.ING);
+
         returnedRecruitmentDTO  = new RecruitmentDTO();
         returnedRecruitmentDTO.setAddressLine(ADDRESS_LINE);
         returnedRecruitmentDTO.setApplicationDate(APPLICATION_DATE);
@@ -131,6 +169,27 @@ class RecruitmnetServiceImplTest {
         returnedRecruitmentDTO.setPostalCode(POSTAL_CODE);
         returnedRecruitmentDTO.setRegion(REGION);
         returnedRecruitmentDTO.setTitle(TITLE);
+
+
+        returnedUpdatedRecruitmentDTO = new RecruitmentDTO();
+        returnedUpdatedRecruitmentDTO.setAddressLine(UPDATED_ADDRESS_LINE);
+        returnedUpdatedRecruitmentDTO.setApplicationDate(APPLICATION_DATE);
+        returnedUpdatedRecruitmentDTO.setBirthDate(BIRTH_DATE);
+        returnedUpdatedRecruitmentDTO.setCity(UPDATED_CITY);
+        returnedUpdatedRecruitmentDTO.setCountry(UPDATED_COUNTRY);
+        returnedUpdatedRecruitmentDTO.setDesiredSalary(DESIRED_SALARY);
+        returnedUpdatedRecruitmentDTO.setCv(getBytes);
+        returnedUpdatedRecruitmentDTO.setDetail(DETAIL);
+        returnedUpdatedRecruitmentDTO.setEmail(UPDATED_EMAIL);
+        returnedUpdatedRecruitmentDTO.setFirstName(UPDATED_FIRST_NAME);
+        returnedUpdatedRecruitmentDTO.setGender(GENDER);
+        returnedUpdatedRecruitmentDTO.setHomePhone(UPDATED_HOME_PHONE);
+        returnedUpdatedRecruitmentDTO.setLastName(UPDATED_LAST_NAME);
+        returnedUpdatedRecruitmentDTO.setMobilePhone(UPDATED_MOBILE_PHONE);
+        returnedUpdatedRecruitmentDTO.setPhoto(getBytes);
+        returnedUpdatedRecruitmentDTO.setPostalCode(UPDATED_POSTAL_CODE);
+        returnedUpdatedRecruitmentDTO.setRegion(UPDATED_REGION);
+        returnedUpdatedRecruitmentDTO.setTitle(TITLE);
     }
 
     @Test
@@ -213,4 +272,22 @@ class RecruitmnetServiceImplTest {
     }
 
 
+    @Test
+    void updateRecruitmnetByDTO() {
+        when(recruitmentRepository.findById(anyLong())).thenReturn(Optional.ofNullable(foundedRecruitment));
+        when(recruitmentRepository.save(any())).thenReturn(wantToUpdateRecruitment);
+        RecruitmentDTO updatedRecruitmentDTO = recruitmentService.updateRecruitmnetByDTO(1L,returnedUpdatedRecruitmentDTO);
+        assertNotNull(updatedRecruitmentDTO);
+        assertEquals(UPDATED_ADDRESS_LINE,updatedRecruitmentDTO.getAddressLine());
+        assertEquals(UPDATED_CITY,updatedRecruitmentDTO.getCity());
+        assertEquals(UPDATED_COUNTRY,updatedRecruitmentDTO.getCountry());
+        assertEquals(UPDATED_REGION,updatedRecruitmentDTO.getRegion());
+        assertEquals(UPDATED_POSTAL_CODE,updatedRecruitmentDTO.getPostalCode());
+        assertEquals(UPDATED_FIRST_NAME,updatedRecruitmentDTO.getFirstName());
+        assertEquals(UPDATED_LAST_NAME,updatedRecruitmentDTO.getLastName());
+        assertEquals(UPDATED_EMAIL,updatedRecruitmentDTO.getEmail());
+        assertEquals(UPDATED_MOBILE_PHONE,updatedRecruitmentDTO.getMobilePhone());
+        assertEquals(UPDATED_HOME_PHONE,updatedRecruitmentDTO.getHomePhone());
+        assertEquals("/api/v1/recruitments/1",updatedRecruitmentDTO.getRecruitmentUrl());
+    }
 }

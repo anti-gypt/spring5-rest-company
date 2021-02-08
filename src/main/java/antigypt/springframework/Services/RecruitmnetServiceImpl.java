@@ -3,6 +3,7 @@ package antigypt.springframework.Services;
 import antigypt.springframework.api.v1.mapper.RecruitmentMapper;
 import antigypt.springframework.api.v1.model.RecruitmentDTO;
 import antigypt.springframework.controllers.api.v1.RecruitmentController;
+import antigypt.springframework.domain.Address;
 import antigypt.springframework.domain.Recruitment;
 import antigypt.springframework.exceptions.ResourceNotFoundException;
 import antigypt.springframework.repositories.RecruitmentRepository;
@@ -57,6 +58,33 @@ public class RecruitmnetServiceImpl implements RecruitmentService {
         RecruitmentDTO returnedDTO = recruitmentMapper.recruitmentToRecruitmentDTO(savedRecruitment);
         returnedDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/" +savedRecruitment.getRecruitmentId());
         return returnedDTO ;
+    }
+
+    @SneakyThrows
+    @Override
+    public RecruitmentDTO updateRecruitmnetByDTO(Long id , RecruitmentDTO recruitmentDTO) {
+        Optional<Recruitment> recruitmentOptional = recruitmentRepository.findById(id);
+        if (!recruitmentOptional.isPresent()){
+            throw new ResourceNotFoundException("id is invalid : "+id);
+        }
+        Recruitment recruitment = recruitmentOptional.get();
+        recruitment.setRecruitmentId(id);
+        recruitment.setFirstName(recruitmentDTO.getFirstName());
+        recruitment.setLastName(recruitmentDTO.getLastName());
+        recruitment.setEmail(recruitmentDTO.getEmail());
+        Address address = new Address();
+        address.setPostalCode(recruitmentDTO.getPostalCode());
+        address.setRegion(recruitmentDTO.getRegion());
+        address.setCountry(recruitmentDTO.getCountry());
+        address.setCity(recruitmentDTO.getCity());
+        address.setAddressLine(recruitmentDTO.getAddressLine());
+        recruitment.setAddress(address);
+        recruitment.setMobilePhone(recruitmentDTO.getMobilePhone());
+        recruitment.setHomePhone(recruitmentDTO.getHomePhone());
+        recruitment.setApplicationDate(recruitmentOptional.get().getApplicationDate());
+        RecruitmentDTO updatedRecruitmentDTO = recruitmentMapper.recruitmentToRecruitmentDTO(recruitmentRepository.save(recruitment));
+        updatedRecruitmentDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/"+id);
+        return updatedRecruitmentDTO;
     }
 
     @Override

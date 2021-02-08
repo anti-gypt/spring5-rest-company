@@ -47,6 +47,16 @@ class RecruitmentControllerTest {
     private static final String MOBILE_PHONE = "123";
     private static final String POSTAL_CODE = "1230";
     private static final String REGION = "Liesing";
+    private static final String UPDATED_ADDRESS_LINE = "Elisenstrasse 1";
+    private static final String UPDATED_COUNTRY = "German";
+    private static final String UPDATED_CITY = "Hamburg";
+    private static final String UPDATED_EMAIL = "ali@gmail.com";
+    private static final String UPDATED_FIRST_NAME = "Ali";
+    private static final String UPDATED_LAST_NAME = "Masoomi";
+    private static final String UPDATED_HOME_PHONE = "321";
+    private static final String UPDATED_MOBILE_PHONE = "321";
+    private static final String UPDATED_POSTAL_CODE = "1120";
+    private static final String UPDATED_REGION = "Wien mitte";
     private static final String TITLE = "ING";
     private static final MockMultipartFile SENDED_IMAGE =
             new MockMultipartFile("imagefile","imagefile","text.txt","this si a byte sample".getBytes());
@@ -64,6 +74,7 @@ class RecruitmentControllerTest {
 
     RecruitmentDTO returnedRecruitmentDTO;
     RecruitmentDTO recruitmentDTONotSame;
+    RecruitmentDTO returnedUpdatedRecruitmentDTO;
     
     @BeforeEach
     void setUp() throws IOException {
@@ -95,6 +106,28 @@ class RecruitmentControllerTest {
         returnedRecruitmentDTO.setRegion(REGION);
         returnedRecruitmentDTO.setTitle(TITLE);
         returnedRecruitmentDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/1");
+
+        returnedUpdatedRecruitmentDTO = new RecruitmentDTO();
+        returnedUpdatedRecruitmentDTO.setAddressLine(UPDATED_ADDRESS_LINE);
+        returnedUpdatedRecruitmentDTO.setApplicationDate(APPLICATION_DATE);
+        returnedUpdatedRecruitmentDTO.setBirthDate(BIRTH_DATE);
+        returnedUpdatedRecruitmentDTO.setCity(UPDATED_CITY);
+        returnedUpdatedRecruitmentDTO.setCountry(UPDATED_COUNTRY);
+        returnedUpdatedRecruitmentDTO.setDesiredSalary(DESIRED_SALARY);
+        returnedUpdatedRecruitmentDTO.setCv(getBytes);
+        returnedUpdatedRecruitmentDTO.setDetail(DETAIL);
+        returnedUpdatedRecruitmentDTO.setEmail(UPDATED_EMAIL);
+        returnedUpdatedRecruitmentDTO.setFirstName(UPDATED_FIRST_NAME);
+        returnedUpdatedRecruitmentDTO.setGender(GENDER);
+        returnedUpdatedRecruitmentDTO.setHomePhone(UPDATED_HOME_PHONE);
+        returnedUpdatedRecruitmentDTO.setLastName(UPDATED_LAST_NAME);
+        returnedUpdatedRecruitmentDTO.setMobilePhone(UPDATED_MOBILE_PHONE);
+        returnedUpdatedRecruitmentDTO.setPhoto(getBytes);
+        returnedUpdatedRecruitmentDTO.setPostalCode(UPDATED_POSTAL_CODE);
+        returnedUpdatedRecruitmentDTO.setRegion(UPDATED_REGION);
+        returnedUpdatedRecruitmentDTO.setTitle(TITLE);
+        returnedUpdatedRecruitmentDTO.setRecruitmentUrl("/api/v1/recruitment/1");
+
 
         recruitmentDTONotSame = new RecruitmentDTO();
         recruitmentDTONotSame.setFirstName("Ali");
@@ -215,7 +248,7 @@ class RecruitmentControllerTest {
 
 
     @Test
-    void InitialupdateRecruitmentForm() throws Exception {
+    void initialupdateRecruitmentForm() throws Exception {
         when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(returnedRecruitmentDTO);
         mockMvc.perform(get("/api/v1/recruitments/1/update"))
                 .andExpect(status().isOk())
@@ -230,12 +263,38 @@ class RecruitmentControllerTest {
     }
 
     @Test
+    void processUpdateForm() throws Exception {
+        when(recruitmentService.updateRecruitmnetByDTO(anyLong(),any(RecruitmentDTO.class))).thenReturn(returnedUpdatedRecruitmentDTO);
+        mockMvc.perform(post(RecruitmentController.BASE_URL+"/update")
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .param("firstName","Ali")
+        .param("lastName" , "Masoomi")
+        .param("email","ali@gmail.com")
+        .param("postalCode" , "1110")
+        .param("region","Meidling")
+        .param("country","German")
+        .param("city" , "Hamburg")
+        .param("addressLine" , "Elisenstrasse 1")
+        .param("homePhone" , "321")
+        .param("mobilePhone" , "321")
+        .param("recruitmentUrl","/api/v1/recruitments/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:"+RecruitmentController.BASE_URL+"/1"));
+        verify(recruitmentService,times(1)).updateRecruitmnetByDTO(anyLong(),any());
+
+    }
+
+
+    @Test
     void deleteRecruitment() throws Exception {
         mockMvc.perform(get("/api/v1/recruitments/1/delete"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(RecruitmentController.RECRUITMENT_SHOW_ALL));
         verify(recruitmentService,times(1)).deleteRecruitmentById(anyLong());
     }
+
+
+
 
 
 }

@@ -62,6 +62,16 @@ public class RecruitmentController {
         RecruitmentDTO savedRecruitmentDTO = recruitmentService.createNewRecruitmnet(recruitmentDTO);
         return "redirect:/api/v1/recruitments/"+savedRecruitmentDTO.getRecruitmentUrl().split("/")[4];
     }
+    @PostMapping("/update")
+    public String processUpdateForm(@ModelAttribute RecruitmentDTO recruitmentDTO, BindingResult result,Model model){
+        if (result.hasErrors()) {
+            model.addAttribute("recruitmentUpdateForm",recruitmentDTO);
+            return UPDATE_RECRUITMENT_FORM;
+        }
+        Long wantToUpdateRecruitmetId = Long.valueOf(recruitmentDTO.getRecruitmentUrl().split("/")[4]);
+        RecruitmentDTO updatedRecruitmentDTO = recruitmentService.updateRecruitmnetByDTO(wantToUpdateRecruitmetId,recruitmentDTO);
+        return "redirect:/api/v1/recruitments/"+updatedRecruitmentDTO.getRecruitmentUrl().split("/")[4];
+    }
 
     @GetMapping("/{id}/update")
     public String InitialupdateRecruitmentForm(@PathVariable Long id, Model model){
