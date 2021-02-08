@@ -8,6 +8,7 @@
 <fieldset>
     <legend>Recruitment</legend>
     <form th:object="${recruitmentUpdateForm}" th:action="@{'/api/v1/recruitments'}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{recruitmentUrl}">
         <table width="450" border="1" align="center">
             <tr>
                 <td width="150" align="left">
