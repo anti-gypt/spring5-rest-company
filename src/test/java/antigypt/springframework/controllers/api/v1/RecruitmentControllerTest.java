@@ -26,8 +26,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -215,4 +214,11 @@ class RecruitmentControllerTest {
     }
 
 
+    @Test
+    void deleteRecruitment() throws Exception {
+        mockMvc.perform(get("/api/v1/recruitments/1/delete"))
+                .andExpect(status().isOk())
+                .andExpect(view().name(RecruitmentController.RECRUITMENT_SHOW_ALL));
+        verify(recruitmentService,times(1)).deleteRecruitmentById(anyLong());
+    }
 }

@@ -102,4 +102,12 @@ public class RecruitmentController {
         model.addAttribute("recruitment" , recruitmentService.findRecruitmentById(id));
         return RECRUITMENTS_RECRUITMENT_CV;
     }
+
+
+    @GetMapping("/{id}//delete")
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteRecruitment(@PathVariable Long id){
+        recruitmentService.deleteRecruitmentById(id);
+        return RECRUITMENT_SHOW_ALL;
+    }
 }

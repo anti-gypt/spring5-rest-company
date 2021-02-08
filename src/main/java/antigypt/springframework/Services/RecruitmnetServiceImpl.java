@@ -51,6 +51,20 @@ public class RecruitmnetServiceImpl implements RecruitmentService {
     }
 
     @Override
+    public RecruitmentDTO createNewRecruitmnet(RecruitmentDTO recruitmentDTO) {
+        Recruitment toBeSaved = recruitmentMapper.recruitmnetDTOToRecruitment(recruitmentDTO);
+        Recruitment savedRecruitment = recruitmentRepository.save(toBeSaved);
+        RecruitmentDTO returnedDTO = recruitmentMapper.recruitmentToRecruitmentDTO(savedRecruitment);
+        returnedDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/" +savedRecruitment.getRecruitmentId());
+        return returnedDTO ;
+    }
+
+    @Override
+    public void deleteRecruitmentById(Long id) {
+        recruitmentRepository.deleteById(id);
+    }
+
+    @Override
     public boolean isNew(RecruitmentDTO recruitmentDTO) {
         boolean isObjectNew = true;
         for (RecruitmentDTO recruitmentDTO1 : getAllRecruitments()) {
@@ -63,16 +77,4 @@ public class RecruitmnetServiceImpl implements RecruitmentService {
         }
         return isObjectNew;
     }
-
-
-    @Override
-    public RecruitmentDTO createNewRecruitmnet(RecruitmentDTO recruitmentDTO) {
-        Recruitment toBeSaved = recruitmentMapper.recruitmnetDTOToRecruitment(recruitmentDTO);
-        Recruitment savedRecruitment = recruitmentRepository.save(toBeSaved);
-        RecruitmentDTO returnedDTO = recruitmentMapper.recruitmentToRecruitmentDTO(savedRecruitment);
-        returnedDTO.setRecruitmentUrl(RecruitmentController.BASE_URL+"/" +savedRecruitment.getRecruitmentId());
-        return returnedDTO ;
-    }
-
-
 }

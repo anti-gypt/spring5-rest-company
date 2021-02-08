@@ -11,4 +11,6 @@ public interface RecruitmentService {
     RecruitmentDTO findRecruitmentById(Long id);
     List<RecruitmentDTO> getAllRecruitments();
     boolean isNew(RecruitmentDTO recruitmentDTO);
+
+    void deleteRecruitmentById(Long id);
 }

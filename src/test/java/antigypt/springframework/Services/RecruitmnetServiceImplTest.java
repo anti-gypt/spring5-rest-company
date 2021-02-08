@@ -185,6 +185,19 @@ class RecruitmnetServiceImplTest {
         boolean isNewObject = recruitmentService.isNew(returnedRecruitmentDTO);
         assertEquals(false,isNewObject);
     }
+
+    @Test
+    void deleteRecruitmentById() {
+        Recruitment recruitment = new Recruitment();
+        recruitment.setRecruitmentId(1L);
+        recruitmentRepository.save(recruitment);
+        recruitmentService.deleteRecruitmentById(1L);
+        Recruitment foundedRecruitment = recruitmentRepository.findById(1L).orElse(null);
+        assertNull(foundedRecruitment);
+    }
+
+
+
     @Test
     void isNewTrue() {
         RecruitmentDTO recruitmentDTO = new RecruitmentDTO();
@@ -198,4 +211,6 @@ class RecruitmnetServiceImplTest {
         boolean isNewObject = recruitmentService.isNew(recruitmentDTO);
         assertEquals(true,isNewObject);
     }
+
+
 }
