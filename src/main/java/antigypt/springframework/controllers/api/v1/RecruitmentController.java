@@ -21,7 +21,8 @@ public class RecruitmentController {
     public static final String BASE_URL = "/api/v1/recruitments";
     public static final String RECRUITMENTS_RECRUITMENT_CV = "recruitments/recruitmentCV";
     private final RecruitmentService recruitmentService;
-    public static final String CREATE_UPDATE_RECRUITMENT_FORM = "recruitments/recruitmentForm";
+    public static final String CREATE_RECRUITMENT_FORM = "recruitments/recruitmentForm";
+    public static final String UPDATE_RECRUITMENT_FORM = "recruitments/recruitmentUpdateForm";
     public static final String RECRUITMENT_SHOW = "recruitments/show";
     public static final String RECRUITMENT_SHOW_ALL = "recruitments/recruitmentList";
 
@@ -32,7 +33,7 @@ public class RecruitmentController {
     @ResponseStatus(HttpStatus.OK)
     public String creatNewRecruitmentForm(Model model){
         model.addAttribute("recruitmentForm" , new RecruitmentDTO());
-        return CREATE_UPDATE_RECRUITMENT_FORM;
+        return CREATE_RECRUITMENT_FORM;
     }
 
     @GetMapping("/{id}")
@@ -55,14 +56,18 @@ public class RecruitmentController {
             result.rejectValue("firstName" , "duplicate" , "already exists");
             if (result.hasErrors()) {
                 model.addAttribute("recruitmentForm",recruitmentDTO);
-                return CREATE_UPDATE_RECRUITMENT_FORM;
+                return CREATE_RECRUITMENT_FORM;
             }
         }
         RecruitmentDTO savedRecruitmentDTO = recruitmentService.createNewRecruitmnet(recruitmentDTO);
         return "redirect:/api/v1/recruitments/"+savedRecruitmentDTO.getRecruitmentUrl().split("/")[4];
     }
 
-
+    @GetMapping("/{id}/update")
+    public String InitialupdateRecruitmentForm(@PathVariable Long id, Model model){
+        model.addAttribute("recruitmentUpdateForm",recruitmentService.findRecruitmentById(id));
+        return UPDATE_RECRUITMENT_FORM;
+    }
 
     @SneakyThrows
     @GetMapping("/{id}/showimage")

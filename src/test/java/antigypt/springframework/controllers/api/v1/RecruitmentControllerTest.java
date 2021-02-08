@@ -108,7 +108,7 @@ class RecruitmentControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(RecruitmentController.BASE_URL+"/new"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recruitmentForm"))
-                .andExpect(view().name(RecruitmentController.CREATE_UPDATE_RECRUITMENT_FORM));
+                .andExpect(view().name(RecruitmentController.CREATE_RECRUITMENT_FORM));
     }
 
     @Test
@@ -168,7 +168,7 @@ class RecruitmentControllerTest {
                 .param("lastName" , "Jouakr")
                 .param("applicationDate",LocalDate.now().toString()))
                 .andExpect(status().isOk())
-                .andExpect(view().name(RecruitmentController.CREATE_UPDATE_RECRUITMENT_FORM));
+                .andExpect(view().name(RecruitmentController.CREATE_RECRUITMENT_FORM));
     }
 
 
@@ -215,10 +215,27 @@ class RecruitmentControllerTest {
 
 
     @Test
+    void InitialupdateRecruitmentForm() throws Exception {
+        when(recruitmentService.findRecruitmentById(anyLong())).thenReturn(returnedRecruitmentDTO);
+        mockMvc.perform(get("/api/v1/recruitments/1/update"))
+                .andExpect(status().isOk())
+                .andExpect(view().name(RecruitmentController.UPDATE_RECRUITMENT_FORM))
+                .andExpect(model().attributeExists("recruitmentUpdateForm"))
+                .andExpect(model().attribute("recruitmentUpdateForm",
+                        hasProperty("firstName" , equalTo(FIRST_NAME))))
+                .andExpect(model().attribute("recruitmentUpdateForm",
+                        hasProperty("lastName" , equalTo(LAST_NAME))))
+                .andExpect(model().attribute("recruitmentUpdateForm",
+                        hasProperty("recruitmentUrl" , equalTo("/api/v1/recruitments/1"))));
+    }
+
+    @Test
     void deleteRecruitment() throws Exception {
         mockMvc.perform(get("/api/v1/recruitments/1/delete"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(RecruitmentController.RECRUITMENT_SHOW_ALL));
         verify(recruitmentService,times(1)).deleteRecruitmentById(anyLong());
     }
+
+
 }
