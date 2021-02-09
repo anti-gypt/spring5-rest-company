@@ -31,7 +31,7 @@ class RecruitmnetServiceImplTest {
     private static final String ADDRESS_LINE = "Elisenstarse 1";
     private static final String COUNTRY = "Austria";
     private static final String APPLICATION_DATE = LocalDate.now().toString();
-    private static final String BIRTH_DATE = LocalDate.now().toString();
+    private static final String BIRTH_DATE = LocalDate.of(1989,9,5).toString();
     private static final String CITY = "Wien";
     private static final Double DESIRED_SALARY = 1000.0;
     private static final String DETAIL = "this is detail";
@@ -39,8 +39,8 @@ class RecruitmnetServiceImplTest {
     private static final String FIRST_NAME = "Omid";
     private static final String LAST_NAME = "Joukar";
     private static final String GENDER = "MALE";
-    private static final String HOME_PHONE = "123";
-    private static final String MOBILE_PHONE = "123";
+    private static final String HOME_PHONE = "123456";
+    private static final String MOBILE_PHONE = "1234567890";
     private static final String POSTAL_CODE = "1230";
     private static final String REGION = "Liesing";
     private static final String UPDATED_ADDRESS_LINE = "Elisenstrasse 1";
@@ -49,8 +49,8 @@ class RecruitmnetServiceImplTest {
     private static final String UPDATED_EMAIL = "ali@gmail.com";
     private static final String UPDATED_FIRST_NAME = "Ali";
     private static final String UPDATED_LAST_NAME = "Masoomi";
-    private static final String UPDATED_HOME_PHONE = "321";
-    private static final String UPDATED_MOBILE_PHONE = "321";
+    private static final String UPDATED_HOME_PHONE = "654321";
+    private static final String UPDATED_MOBILE_PHONE = "0987654321";
     private static final String UPDATED_POSTAL_CODE = "1120";
     private static final String UPDATED_REGION = "Wien mitte";
     private static final String TITLE = "ING";
@@ -102,7 +102,7 @@ class RecruitmnetServiceImplTest {
         savedRecruitment.setRecruitmentId(1L);
         savedRecruitment.setAddress(address);
         savedRecruitment.setApplicationDate(LocalDate.now());
-        savedRecruitment.setBirthDate(LocalDate.now());
+        savedRecruitment.setBirthDate(LocalDate.of(1989,9,5));
         savedRecruitment.setDesiredSalary(DESIRED_SALARY);
         savedRecruitment.setCv(getBytes);
         savedRecruitment.setDetail(DETAIL);
@@ -119,7 +119,7 @@ class RecruitmnetServiceImplTest {
         foundedRecruitment.setRecruitmentId(1L);
         foundedRecruitment.setAddress(address);
         foundedRecruitment.setApplicationDate(LocalDate.now());
-        foundedRecruitment.setBirthDate(LocalDate.now());
+        foundedRecruitment.setBirthDate(LocalDate.of(1989,9,5));
         foundedRecruitment.setDesiredSalary(DESIRED_SALARY);
         foundedRecruitment.setCv(getBytes);
         foundedRecruitment.setDetail(DETAIL);

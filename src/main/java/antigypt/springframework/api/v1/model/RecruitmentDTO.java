@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Range;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
+import org.mapstruct.Mapping;
+
+import javax.validation.constraints.*;
 
 
 @Data
@@ -38,9 +36,11 @@ public class RecruitmentDTO {
     private String region;
     @Min(4)
     private String postalCode;
-    @Range(min = 6,max = 8)
+    @Min(6)
+    @Max(8)
     private String homePhone;
-    @Range(min = 8,max = 14)
+    @Min(8)
+    @Max(14)
     private String mobilePhone;
     private Double desiredSalary;
     private Byte[] photo;

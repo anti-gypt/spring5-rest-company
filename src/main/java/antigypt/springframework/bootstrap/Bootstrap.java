@@ -68,14 +68,14 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         recruitment.setFirstName("Roghayeh");
         recruitment.setLastName("Alinattaj");
         recruitment.setBirthDate(LocalDate.of(1989,9,5));
-        recruitment.setApplicationDate(LocalDate.now());
+        recruitment.setApplicationDate(LocalDate.of(2021,1,2));
         recruitment.setAddress(address);
         recruitment.setDesiredSalary(2500.0);
         recruitment.setDetail("This is my first Apply for Job");
         recruitment.setEmail("bitta.52@gmail.com");
         recruitment.setGender(Gender.FEMALE);
         recruitment.setTitle(Title.ING);
-        recruitment.setHomePhone("123");
+        recruitment.setHomePhone("123456");
         recruitment.setMobilePhone("06605443488");
         recruitment.setPhoto(getBytesPhoto);
         recruitment.setCv(getBytesCv);

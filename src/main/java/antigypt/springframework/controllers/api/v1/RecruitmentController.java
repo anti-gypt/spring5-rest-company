@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -51,7 +52,7 @@ public class RecruitmentController {
 
 
     @PostMapping
-    public String processCreationForm(@ModelAttribute RecruitmentDTO recruitmentDTO, BindingResult result,Model model){
+    public String processCreationForm(@ModelAttribute @Valid RecruitmentDTO recruitmentDTO, BindingResult result, Model model){
         if (recruitmentService.isNew(recruitmentDTO) == false) {
             result.rejectValue("firstName" , "duplicate" , "already exists");
             if (result.hasErrors()) {
@@ -63,7 +64,7 @@ public class RecruitmentController {
         return "redirect:/api/v1/recruitments/"+savedRecruitmentDTO.getRecruitmentUrl().split("/")[4];
     }
     @PostMapping("/update")
-    public String processUpdateForm(@ModelAttribute RecruitmentDTO recruitmentDTO, BindingResult result,Model model){
+    public String processUpdateForm(@ModelAttribute @Valid RecruitmentDTO recruitmentDTO, BindingResult result,Model model){
         if (result.hasErrors()) {
             model.addAttribute("recruitmentUpdateForm",recruitmentDTO);
             return UPDATE_RECRUITMENT_FORM;

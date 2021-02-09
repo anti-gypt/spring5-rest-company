@@ -35,7 +35,7 @@ class RecruitmentControllerTest {
     private static final String ADDRESS_LINE = "Elisenstarse 1";
     private static final String COUNTRY = "Austria";
     private static final String APPLICATION_DATE = LocalDate.now().toString();
-    private static final String BIRTH_DATE = LocalDate.now().toString();
+    private static final String BIRTH_DATE = LocalDate.of(1989,9,5).toString();
     private static final String CITY = "Wien";
     private static final Double DESIRED_SALARY = 1000.0;
     private static final String DETAIL = "this is detail";
@@ -43,8 +43,8 @@ class RecruitmentControllerTest {
     private static final String FIRST_NAME = "Omid";
     private static final String LAST_NAME = "Joukar";
     private static final String GENDER = "MALE";
-    private static final String HOME_PHONE = "123";
-    private static final String MOBILE_PHONE = "123";
+    private static final String HOME_PHONE = "123456";
+    private static final String MOBILE_PHONE = "1234567890";
     private static final String POSTAL_CODE = "1230";
     private static final String REGION = "Liesing";
     private static final String UPDATED_ADDRESS_LINE = "Elisenstrasse 1";
@@ -53,8 +53,8 @@ class RecruitmentControllerTest {
     private static final String UPDATED_EMAIL = "ali@gmail.com";
     private static final String UPDATED_FIRST_NAME = "Ali";
     private static final String UPDATED_LAST_NAME = "Masoomi";
-    private static final String UPDATED_HOME_PHONE = "321";
-    private static final String UPDATED_MOBILE_PHONE = "321";
+    private static final String UPDATED_HOME_PHONE = "654321";
+    private static final String UPDATED_MOBILE_PHONE = "0123456789";
     private static final String UPDATED_POSTAL_CODE = "1120";
     private static final String UPDATED_REGION = "Wien mitte";
     private static final String TITLE = "ING";
@@ -132,7 +132,7 @@ class RecruitmentControllerTest {
         recruitmentDTONotSame = new RecruitmentDTO();
         recruitmentDTONotSame.setFirstName("Ali");
         recruitmentDTONotSame.setLastName("Masoomi");
-        recruitmentDTONotSame.setBirthDate(LocalDate.now().toString());
+        recruitmentDTONotSame.setBirthDate(LocalDate.of(1989,9,5).toString());
 
     }
 
@@ -182,7 +182,7 @@ class RecruitmentControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
         .param("firstName" , "Ali")
         .param("lastName" , "Masoomi")
-        .param("birthDate" , LocalDate.now().toString()))
+        .param("birthDate" , LocalDate.of(1989,9,5).toString()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:"+RecruitmentController.BASE_URL+"/1"));
         verify(recruitmentService,times(1)).createNewRecruitmnet(any());
@@ -199,7 +199,17 @@ class RecruitmentControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("firstName" , "Omid")
                 .param("lastName" , "Jouakr")
-                .param("applicationDate",LocalDate.now().toString()))
+                .param("applicationDate",LocalDate.now().toString())
+                .param("mobilePhone","1234567890")
+                .param("homePhone","123456")
+                .param("postalCode","1230")
+                .param("region","Liesing")
+                .param("country","Austria")
+                .param("city","Wien")
+                .param("addressLine","Elisenstarse 1")
+                .param("email","omid@gmail.com")
+                .param("birthDate",LocalDate.of(1989,9,5).toString())
+        )
                 .andExpect(status().isOk())
                 .andExpect(view().name(RecruitmentController.CREATE_RECRUITMENT_FORM));
     }
@@ -275,8 +285,8 @@ class RecruitmentControllerTest {
         .param("country","German")
         .param("city" , "Hamburg")
         .param("addressLine" , "Elisenstrasse 1")
-        .param("homePhone" , "321")
-        .param("mobilePhone" , "321")
+        .param("homePhone" , "654321")
+        .param("mobilePhone" , "0123456789")
         .param("recruitmentUrl","/api/v1/recruitments/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:"+RecruitmentController.BASE_URL+"/1"));
