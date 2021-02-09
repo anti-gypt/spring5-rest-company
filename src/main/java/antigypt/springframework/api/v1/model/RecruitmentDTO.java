@@ -5,7 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+import org.hibernate.validator.constraints.Range;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 
 
 @Data
@@ -13,20 +17,30 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class RecruitmentDTO {
 
-
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
     private String title;
     private String gender;
+    @Past
     private String birthDate;
     private String applicationDate;
+    @Email
     private String email;
+    @NotBlank
     private String addressLine;
+    @NotBlank
     private String city;
+    @NotBlank
     private String country;
+    @NotBlank
     private String region;
+    @Min(4)
     private String postalCode;
+    @Range(min = 6,max = 8)
     private String homePhone;
+    @Range(min = 8,max = 14)
     private String mobilePhone;
     private Double desiredSalary;
     private Byte[] photo;
