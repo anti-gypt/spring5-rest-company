@@ -42,7 +42,10 @@ public class Vehicle {
 
     @Lob
     @Column(name = "image")
-    private byte[] image;
+    private Byte[] image;
+
+    @OneToOne(mappedBy = "vehicle",cascade = CascadeType.ALL)
+    private Employee employee;
 
     //@OneToOne(mappedBy = "vehicle",cascade = CascadeType.ALL)
     //private VehicleControl vehicleControl;
