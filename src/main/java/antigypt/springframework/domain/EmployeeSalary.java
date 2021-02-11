@@ -17,13 +17,13 @@ public class EmployeeSalary {
     private Long employeeSalaryId;
 
     @Column(name = "monthlySalary")
-    private double monthlySalary;
+    private Double monthlySalary;
     @Column(name = "reward")
-    private double reward;
+    private Double reward;
     @Column(name = "penalty")
-    private double penalty;
+    private Double penalty;
     @Column(name = "extraCost")
-    private double extraCost;
+    private Double extraCost;
     @Column(name = "salaryTax")
     private double salaryTax;
     @Column(name = "totalSalary")
