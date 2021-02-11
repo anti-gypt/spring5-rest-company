@@ -53,7 +53,7 @@ public class Employee {
 
     @Lob
     @Column(name = "photo")
-    private byte[] photo;
+    private Byte[] photo;
 
     @OneToMany(mappedBy = "reportsTo", cascade = CascadeType.ALL)
     private List<Employee> employeeList = new ArrayList<>();
