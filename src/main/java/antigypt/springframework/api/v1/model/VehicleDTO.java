@@ -28,5 +28,5 @@ public class VehicleDTO {
     private String owner;
     private Byte[] image;
     private String vehicleUrl;
-    private EmployeeDTO employee;
+    private EmployeeDTO employeeDTO;
 }
