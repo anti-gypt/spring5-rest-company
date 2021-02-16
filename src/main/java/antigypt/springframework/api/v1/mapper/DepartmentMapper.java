@@ -54,7 +54,8 @@ public interface DepartmentMapper {
     ), @Mapping(
             source = "employees.employees",
             target = "employeeList"
-    )})
+    ),
+    })
     Department departmentDTOToDepartment(DepartmentDTO departmentDTO);
 
     List<EmployeeDTO> mapListEmployeeToListEmployeeDTO(List<Employee> employees);
