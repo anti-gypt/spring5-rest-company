@@ -2,6 +2,8 @@ package antigypt.springframework.api.v1.mapper;
 
 import antigypt.springframework.api.v1.model.EmployeeDTO;
 import antigypt.springframework.domain.Employee;
+import antigypt.springframework.qualifires.ListEmployeeDTOToListEmployee;
+import antigypt.springframework.qualifires.LitEmployeeToListEmployeeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -33,7 +35,8 @@ public interface EmployeeMapper {
             target = "postalCode"
     ), @Mapping(
             source = "employeeList",
-            target = "employees.employees"
+            target = "employees.employees",
+            qualifiedBy = LitEmployeeToListEmployeeDTO.class
     ), @Mapping(
             source = "reportsTo",
             target = "reportsTo"
@@ -72,7 +75,8 @@ public interface EmployeeMapper {
             target = "address.postalCode"
     ), @Mapping(
             source = "employees.employees",
-            target = "employeeList"
+            target = "employeeList" ,
+            qualifiedBy = ListEmployeeDTOToListEmployee.class
     ), @Mapping(
             source = "reportsTo",
             target = "reportsTo"
@@ -91,8 +95,11 @@ public interface EmployeeMapper {
     )})
     Employee employeeDTOToEmployee(EmployeeDTO employeeDTO);
 
+
+    @ListEmployeeDTOToListEmployee
     List<Employee> listEmployeeDTOToListEmployee(List<EmployeeDTO> employees);
 
+    @LitEmployeeToListEmployeeDTO
     List<EmployeeDTO> listEmployeeToListEmployeeDTO(List<Employee> employees);
 }
 
