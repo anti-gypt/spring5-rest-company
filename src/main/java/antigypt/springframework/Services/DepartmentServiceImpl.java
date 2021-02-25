@@ -76,9 +76,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.getAddress().setRegion(departmentDTO.getRegion());
         department.getAddress().setPostalCode(departmentDTO.getPostalCode());
         department.getAddress().setPostalCode(departmentDTO.getCountry());
-        Department updatedDepartment = departmentRepository.save(department);
-        DepartmentDTO updatedDepartmentDTO = departmentMapper.departmentToDepartmentDTO(updatedDepartment);
-        updatedDepartmentDTO.setDepartmetnUrl("/api/v1/departments"+updatedDepartment.getDepartmentId());
+        DepartmentDTO updatedDepartmentDTO = departmentMapper.departmentToDepartmentDTO(departmentRepository.save(department));
+        updatedDepartmentDTO.setDepartmetnUrl("/api/v1/departments"+department.getDepartmentId());
         return updatedDepartmentDTO;
     }
 
