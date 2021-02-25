@@ -1,20 +1,18 @@
 package antigypt.springframework.api.v1.model;
 
 import antigypt.springframework.domain.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeDTO {
-
 
     @NotBlank
     private String firstName;

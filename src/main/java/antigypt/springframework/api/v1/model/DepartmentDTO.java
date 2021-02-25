@@ -2,9 +2,7 @@ package antigypt.springframework.api.v1.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import javax.validation.constraints.Email;
@@ -12,7 +10,10 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DepartmentDTO {
     @Min(6)
     private String phoneNumber;
@@ -32,5 +33,4 @@ public class DepartmentDTO {
     @JsonProperty("depratment_url")
     private String DepartmetnUrl;
 
-    private EmployeeListDTO employees;
 }

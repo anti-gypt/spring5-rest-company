@@ -26,7 +26,7 @@ public interface JobTitleMapper {
     )
     JobTitle jobTitleDTOToJobTitle(JobTitleDTO jobTitleDTO);
 
-    List<EmployeeDTO> listEmployeeToListEmployeeDTO(List<Employee> employees);
+    //List<EmployeeDTO> listEmployeeToListEmployeeDTO(List<Employee> employees);
 
-    List<Employee> listEmployeeDTOToListEmployee(List<EmployeeDTO> employees);
+    //List<Employee> listEmployeeDTOToListEmployee(List<EmployeeDTO> employees);
 }

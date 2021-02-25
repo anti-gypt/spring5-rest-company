@@ -2,8 +2,7 @@ package antigypt.springframework.domain;
 
 
 
-import lombok.Data;
-
+import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,7 +10,10 @@ import java.util.List;
 
 @Entity
 @Table(name="Employee")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee {
 
     @Id
