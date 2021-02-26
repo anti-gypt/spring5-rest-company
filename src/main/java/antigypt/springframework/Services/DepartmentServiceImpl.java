@@ -114,8 +114,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentDTO> findDepartmentByName(String departmentName) {
-        return departmentRepository.findDepartmentByName(departmentName)
+    public List<DepartmentDTO> findAllByEmail(String email) {
+        return departmentRepository.findAllByEmail(email)
                 .stream()
                 .map(department -> {
                     DepartmentDTO departmentDTO = departmentMapper.departmentToDepartmentDTO(department);

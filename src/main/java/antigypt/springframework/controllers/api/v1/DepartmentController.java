@@ -20,6 +20,7 @@ public class DepartmentController {
     public static final String CREATE_UPDATE_FORM = "departments/departmentForm";
     public static final String DEPARTMENTS_SHOW = "departments/show";
     public static final String DEPARTMENT_LIST = "departments/departmentList";
+    public static final String DEPARTMENT_SEARCH_FORM = "departments/departmentSearchForm";
 
     private final DepartmentService departmentService;
     private final EmployeeService employeeService;
@@ -74,16 +75,18 @@ public class DepartmentController {
     }
     @GetMapping("/{departmentName}")
     @ResponseStatus(HttpStatus.OK)
-    public String processFindingAllDepartmentsByName(@PathVariable String departmentName, Model model){
-        if (departmentName == null || departmentName.trim().equals("")){
-            departmentName = " ";
+    public String processFindingAllDepartmentsByName(@RequestParam DepartmentDTO departmentDTO,BindingResult bindingResult,  Model model){
+        if (departmentDTO.getEmail() == null){
+            departmentDTO.setEmail(" ");
         }
-        List<DepartmentDTO> foundedDepartments = departmentService.findDepartmentByName("%"+departmentName+"%");
-        if (foundedDepartments.size() == 0){
-            return "departments/departmentSearchForm";
+        List<DepartmentDTO> foundedDepartments = departmentService.findAllByEmail("%"+departmentDTO.getEmail()+"%");
+        if (foundedDepartments.isEmpty()){
+            bindingResult.rejectValue("email" , "not found" , "doesnt exists");
+            model.addAttribute("department" , departmentDTO);
+            return DEPARTMENT_SEARCH_FORM;
         }
         if (foundedDepartments.size() == 1 ){
-            return DEPARTMENTS_SHOW;
+            return "redirect:/"+DepartmentController.BASE_URL+"/"+foundedDepartments.get(0).getDepartmetnUrl().split("/")[4];
         }
         return DEPARTMENT_LIST;
     }
