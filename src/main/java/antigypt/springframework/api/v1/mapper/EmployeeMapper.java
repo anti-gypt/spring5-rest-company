@@ -2,7 +2,6 @@ package antigypt.springframework.api.v1.mapper;
 
 
 import antigypt.springframework.api.v1.model.EmployeeDTO;
-
 import antigypt.springframework.domain.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

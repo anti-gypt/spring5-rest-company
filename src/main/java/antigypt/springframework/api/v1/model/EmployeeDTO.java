@@ -1,9 +1,7 @@
 package antigypt.springframework.api.v1.model;
 
-import antigypt.springframework.domain.*;
-import lombok.*;
 
-import javax.persistence.*;
+import lombok.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 

@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeeMapperTest {
-    private static final String PHONENUMBER = "12345678";
+
     private static final String EMAIL = "omid@gmail.com";
     private static final String DETAIL = "this is detail";
     private static final String ADDRESSLINE = "Elisenstarse 1";
@@ -21,15 +21,6 @@ class EmployeeMapperTest {
     private static final String CITY = "Wien";
     private static final String POSTALCODE = "1230";
     private static final String REGION = "Liesing";
-    private static final String UPDATED_ADDRESS_LINE = "Elisenstrasse 1";
-    private static final String UPDATED_COUNTRY = "German";
-    private static final String UPDATED_CITY = "Hamburg";
-    private static final String UPDATED_EMAIL = "ali@gmail.com";
-    private static final String UPDATED_POSTAL_CODE = "1120";
-    private static final String UPDATED_REGION = "Wien mitte";
-    private static final String UPDATED_PHONENUMBER = "87654321";
-    private static final String BIRTH_DATE = LocalDate.of(1989,9,5).toString();
-    private static final String HIRE_DATE = LocalDate.of(2012,9,5).toString();
     private static final String FIRST_NAME = "Omid";
     private static final String LAST_NAME = "Joukar";
     private static final String GENDER = "MALE";
