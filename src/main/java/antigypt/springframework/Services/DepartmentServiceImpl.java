@@ -4,6 +4,7 @@ import antigypt.springframework.api.v1.mapper.DepartmentMapper;
 import antigypt.springframework.api.v1.mapper.EmployeeMapper;
 import antigypt.springframework.api.v1.model.DepartmentDTO;
 import antigypt.springframework.api.v1.model.EmployeeDTO;
+import antigypt.springframework.controllers.api.v1.DepartmentController;
 import antigypt.springframework.domain.Department;
 import antigypt.springframework.exceptions.ResourceNotFoundException;
 import antigypt.springframework.repositories.DepartmentRepository;
@@ -110,5 +111,17 @@ public class DepartmentServiceImpl implements DepartmentService {
             }
         }
         return isObjectNew;
+    }
+
+    @Override
+    public List<DepartmentDTO> findDepartmentByName(String departmentName) {
+        return departmentRepository.findDepartmentByName(departmentName)
+                .stream()
+                .map(department -> {
+                    DepartmentDTO departmentDTO = departmentMapper.departmentToDepartmentDTO(department);
+                    departmentDTO.setDepartmetnUrl(DepartmentController.BASE_URL+"/"+department.getDepartmentId());
+                    return departmentDTO;
+                })
+                .collect(Collectors.toList());
     }
 }

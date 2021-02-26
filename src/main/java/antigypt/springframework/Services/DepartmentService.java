@@ -14,4 +14,5 @@ public interface DepartmentService {
     void deleteDepartmentById(Long id);
     List<EmployeeDTO> getAllDepartmentEmployees(Long id);
     boolean isNew(DepartmentDTO departmentDTO);
+    List<DepartmentDTO> findDepartmentByName(String departmentName);
 }
