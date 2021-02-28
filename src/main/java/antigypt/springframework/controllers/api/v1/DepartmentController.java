@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 @RequestMapping(DepartmentController.BASE_URL)
 public class DepartmentController {
-    public static final String BASE_URL = "api/v1/departments";
+    public static final String BASE_URL = "/api/v1/departments";
     public static final String CREATE_UPDATE_FORM = "departments/departmentForm";
     public static final String DEPARTMENTS_SHOW = "departments/show";
     public static final String DEPARTMENT_LIST = "departments/departmentList";
@@ -32,9 +32,9 @@ public class DepartmentController {
     @ResponseStatus(HttpStatus.OK)
     public String createNewDepartmentForm(Model model){
         model.addAttribute("departmentForm",new DepartmentDTO());
-        return "departments/departmentForm";
+        return CREATE_UPDATE_FORM;
     }
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public String processDepartmentCreationForm(@ModelAttribute @Valid DepartmentDTO departmentDTO, BindingResult bindingResult, Model model){
         if (departmentService.isNew(departmentDTO) == false){
@@ -73,9 +73,9 @@ public class DepartmentController {
         model.addAttribute("departmentForm" , departmentService.findDepartmentById(id));
         return CREATE_UPDATE_FORM;
     }
-    @GetMapping("/{departmentName}")
+    @PostMapping("/finddepartment")
     @ResponseStatus(HttpStatus.OK)
-    public String processFindingAllDepartmentsByName(@RequestParam DepartmentDTO departmentDTO,BindingResult bindingResult,  Model model){
+    public String processFindingAllDepartmentsByName(@ModelAttribute DepartmentDTO departmentDTO,BindingResult bindingResult,  Model model){
         if (departmentDTO.getEmail() == null){
             departmentDTO.setEmail(" ");
         }
@@ -90,9 +90,9 @@ public class DepartmentController {
         }
         return DEPARTMENT_LIST;
     }
-    @GetMapping("/{id}/employees/new")
+    @PostMapping("/{id}/employees")
     @ResponseStatus(HttpStatus.CREATED)
-    public String initialCreationNewEmployeeForDepartment(@RequestParam @Valid EmployeeDTO employeeDTO , @PathVariable Long id){
+    public String initialCreationNewEmployeeForDepartment(@ModelAttribute EmployeeDTO employeeDTO , @PathVariable Long id){
         employeeService.createNewEmployee(id,employeeDTO);
         return "redirect:/"+DepartmentController.BASE_URL +"/"+id;
     }
