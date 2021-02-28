@@ -35,7 +35,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentDTO createNewDepartment(DepartmentDTO departmentDTO) {
         Department savedDepartment =  departmentRepository.save(departmentMapper.departmentDTOToDepartment(departmentDTO));
         DepartmentDTO savedDepartmentDTO = departmentMapper.departmentToDepartmentDTO(savedDepartment);
-        savedDepartmentDTO.setDepartmetnUrl("/api/v1/departments/"+savedDepartment.getDepartmentId());
+        savedDepartmentDTO.setDepartmetnUrl(DepartmentController.BASE_URL+"/"+savedDepartment.getDepartmentId());
         return savedDepartmentDTO;
     }
 
@@ -48,7 +48,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         Department foundedDepartment = optionalDepartment.get();
         DepartmentDTO foundedDepartmentDTO  = departmentMapper.departmentToDepartmentDTO(foundedDepartment);
-        foundedDepartmentDTO.setDepartmetnUrl("/api/v1/departments"+ foundedDepartment.getDepartmentId());
+        foundedDepartmentDTO.setDepartmetnUrl(DepartmentController.BASE_URL+"/"+ foundedDepartment.getDepartmentId());
         return foundedDepartmentDTO;
     }
 
@@ -56,7 +56,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentDTO> getAllDepartments() {
         return departmentRepository.findAll().stream().map(department -> {
             DepartmentDTO departmentDTO = departmentMapper.departmentToDepartmentDTO(department);
-            departmentDTO.setDepartmetnUrl("/api/v1/departments/"+department.getDepartmentId());
+            departmentDTO.setDepartmetnUrl(DepartmentController.BASE_URL+"/"+department.getDepartmentId());
             return departmentDTO;
         }).collect(Collectors.toList());
     }
@@ -78,7 +78,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.getAddress().setPostalCode(departmentDTO.getPostalCode());
         department.getAddress().setPostalCode(departmentDTO.getCountry());
         DepartmentDTO updatedDepartmentDTO = departmentMapper.departmentToDepartmentDTO(departmentRepository.save(department));
-        updatedDepartmentDTO.setDepartmetnUrl("/api/v1/departments"+department.getDepartmentId());
+        updatedDepartmentDTO.setDepartmetnUrl(DepartmentController.BASE_URL+"/"+department.getDepartmentId());
         return updatedDepartmentDTO;
     }
 
