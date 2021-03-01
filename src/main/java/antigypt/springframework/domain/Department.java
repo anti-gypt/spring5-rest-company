@@ -39,10 +39,21 @@ public class Department {
 
     @OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
     private List<Employee> employeeList = new ArrayList<>();
+    @OneToOne(mappedBy = "department" , cascade = CascadeType.ALL)
+    private DepartmentProducts departmentProducts;
+    @OneToOne(mappedBy = "department" , cascade = CascadeType.ALL)
+    private DepartmentCorruptProducts departmentCorruptProducts;
+    @OneToOne(mappedBy = "department" , cascade = CascadeType.ALL)
+    private DepartmentNecessaryProducts departmentNecessaryProducts;
+
+    @ManyToMany
+    @JoinTable(name = "departmentProductType" ,
+    joinColumns = @JoinColumn(name = "departmentId"),
+    inverseJoinColumns = @JoinColumn(name = "productTypeId"))
+    List<ProductType> productTypeList = new ArrayList<>();
 
 
-   //@OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
-   //private List<Shift> shiftList = new ArrayList<>();
+    //private List<Shift> shiftList = new ArrayList<>();
    //@OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
    //private List<Order> orderList = new ArrayList<>();
 
