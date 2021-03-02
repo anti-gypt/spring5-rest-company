@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentProducts extends Products{
+public class DepartmentProduct extends Product {
 
     @OneToOne
     @JoinColumn(name = "departmentId")
