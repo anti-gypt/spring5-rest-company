@@ -31,10 +31,10 @@ public class ProductType {
     private String detail;
 
     @OneToMany(mappedBy = "productType" , cascade = CascadeType.ALL)
-    private List<DepartmentProducts> departmentProductsList = new ArrayList<>();
+    private List<DepartmentProduct> departmentProductsList = new ArrayList<>();
     @OneToMany(mappedBy = "productType" , cascade = CascadeType.ALL)
-    private List<DepartmentCorruptProducts> departmentCorruptProductsList = new ArrayList<>();
+    private List<DepartmentCorruptProduct> departmentCorruptProductsList = new ArrayList<>();
     @OneToMany(mappedBy = "productType" , cascade = CascadeType.ALL)
-    private List<DepartmentNecessaryProducts> departmentNecessaryProductsList = new ArrayList<>();
+    private List<DepartmentNecessaryProduct> departmentNecessaryProductsList = new ArrayList<>();
 
 }
