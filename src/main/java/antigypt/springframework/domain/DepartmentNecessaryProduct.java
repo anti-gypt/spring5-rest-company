@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentNecessaryProducts extends Products {
+public class DepartmentNecessaryProduct extends Product {
 
     @OneToOne
     @JoinColumn(name = "departmentId")
