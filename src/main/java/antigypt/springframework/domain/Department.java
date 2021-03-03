@@ -40,11 +40,11 @@ public class Department {
     @OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
     private List<Employee> employeeList = new ArrayList<>();
     @OneToOne(mappedBy = "department" , cascade = CascadeType.ALL)
-    private DepartmentProducts departmentProducts;
+    private DepartmentProduct departmentProducts;
     @OneToOne(mappedBy = "department" , cascade = CascadeType.ALL)
-    private DepartmentCorruptProducts departmentCorruptProducts;
+    private DepartmentCorruptProduct departmentCorruptProducts;
     @OneToOne(mappedBy = "department" , cascade = CascadeType.ALL)
-    private DepartmentNecessaryProducts departmentNecessaryProducts;
+    private DepartmentNecessaryProduct departmentNecessaryProducts;
 
     @ManyToMany
     @JoinTable(name = "departmentProductType" ,
