@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class DepartmentCorruptProductDTO extends ProductDTO{
 
-    private DepartmentDTO departmentDTO;
+    private DepartmentDTO department;
 }
