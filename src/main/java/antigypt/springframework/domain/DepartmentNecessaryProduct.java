@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+
 import javax.persistence.Table;
 
 /**
@@ -15,14 +14,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "NecessaryProduct")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class DepartmentNecessaryProduct extends Product {
-
-    @OneToOne
-    @JoinColumn(name = "departmentId")
-    private Department department;
 
 }
