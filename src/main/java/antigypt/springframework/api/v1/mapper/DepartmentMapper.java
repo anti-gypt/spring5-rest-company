@@ -28,7 +28,9 @@ public interface DepartmentMapper {
     ), @Mapping(
             source = "address.postalCode",
             target = "postalCode"
-    )
+    ), @Mapping(
+            source = "productList",
+            target = "productList.products")
     })
     DepartmentDTO departmentToDepartmentDTO(Department department);
 
@@ -47,7 +49,9 @@ public interface DepartmentMapper {
     ), @Mapping(
             source = "postalCode",
             target = "address.postalCode"
-    )
+    ), @Mapping(
+            source = "productList.products",
+            target = "productList")
     })
     Department departmentDTOToDepartment(DepartmentDTO departmentDTO);
 
