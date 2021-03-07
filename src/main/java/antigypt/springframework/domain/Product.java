@@ -7,20 +7,26 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by omid on 11/20/2020.
  */
+
+@Entity
+@Table(name = "product")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+
     @Column(name = "productName")
     private String productName;
     @Column(name = "expirationDate")
@@ -47,6 +53,13 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "productTypeId")
     private ProductType productType;
+
+    @ManyToMany
+    @JoinTable(name = "department_product" ,
+            joinColumns = @JoinColumn(name = "product_Id"),
+            inverseJoinColumns = @JoinColumn(name = "department_Id"))
+    List<Department> departmentList = new ArrayList<>();
+
 
     //@ManyToOne(cascade = CascadeType.ALL)
     //@JoinColumn(name = "producersId")
