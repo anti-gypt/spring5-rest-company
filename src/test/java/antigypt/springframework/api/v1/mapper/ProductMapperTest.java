@@ -1,21 +1,22 @@
 package antigypt.springframework.api.v1.mapper;
 
-import antigypt.springframework.api.v1.model.DepartmentCorruptProductDTO;
 import antigypt.springframework.api.v1.model.DepartmentDTO;
-import antigypt.springframework.api.v1.model.DepartmentNecessaryProductDTO;
+import antigypt.springframework.api.v1.model.ProductDTO;
 import antigypt.springframework.api.v1.model.ProductTypeDTO;
 import antigypt.springframework.domain.*;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-class DepartmentCorruptProductMapperTest {
+@ExtendWith(MockitoExtension.class)
+class ProductMapperTest {
     private static final String PHONENUMBER = "12345678";
     private static final String EMAIL = "omid@gmail.com";
     private static final String DETAIL = "this is detail";
@@ -40,20 +41,20 @@ class DepartmentCorruptProductMapperTest {
             new MockMultipartFile("cvfile","cvfile","text.txt","this si a byte sample".getBytes());
 
 
-    DepartmentCorruptProductMapper departmentCorruptProductMapper;
-    DepartmentCorruptProductDTO departmentProductDTO;
-    DepartmentCorruptProduct departmentProduct;
+    ProductMapper productMapper;
+    ProductDTO departmentProductDTO;
+    Product departmentProduct;
     Department savedReturnedDepartment;
     Address address;
     DepartmentDTO sendedDepartmentDTO;
     Byte[] getBytes;
     ProductType productType;
     ProductTypeDTO productTypeDTO;
-
     @SneakyThrows
     @BeforeEach
     void setUp() {
-        departmentCorruptProductMapper = DepartmentCorruptProductMapper.INSTANCE;
+
+        productMapper = antigypt.springframework.api.v1.mapper.ProductMapper.INSTANCE;
 
         getBytes = new Byte[SENDED_IMAGE.getBytes().length];
         int i = 0 ;
@@ -99,7 +100,7 @@ class DepartmentCorruptProductMapperTest {
         productTypeDTO.setProductTypeName(ProductTypeName.CUPS_PLATES);
 
 
-        departmentProduct = new DepartmentCorruptProduct();
+        departmentProduct = new Product();
         departmentProduct.setDetail(DETAIL);
         departmentProduct.setDiscount(Double.valueOf(DISCOUNT));
         departmentProduct.setExpirationDate(EXPIRATION_DATE);
@@ -111,10 +112,10 @@ class DepartmentCorruptProductMapperTest {
         departmentProduct.setProductName(PRODUCT_NAME);
         departmentProduct.setSerialNumber(getBytes);
         departmentProduct.setWeight(Double.valueOf(WEIGHT));
-        departmentProduct.setDepartment(savedReturnedDepartment);
+
         departmentProduct.setProductType(productType);
 
-        departmentProductDTO = new DepartmentCorruptProductDTO();
+        departmentProductDTO = new ProductDTO();
         departmentProductDTO.setDetail(DETAIL);
         departmentProductDTO.setDiscount(DISCOUNT);
         departmentProductDTO.setExpirationDate(String.valueOf(EXPIRATION_DATE));
@@ -125,22 +126,23 @@ class DepartmentCorruptProductMapperTest {
         departmentProductDTO.setProductName(PRODUCT_NAME);
         departmentProductDTO.setSerialNumber(getBytes);
         departmentProductDTO.setWeight(WEIGHT);
-        departmentProductDTO.setDepartment(sendedDepartmentDTO);
+
         departmentProductDTO.setProductType(productTypeDTO);
         departmentProductDTO.setProductUrl("/api/v1/products/1");
 
-
     }
 
     @Test
-    void departmentCorruptProductDTOToDepartmentCorruptProduct() {
-        DepartmentCorruptProduct departmentCorruptProduct = departmentCorruptProductMapper.departmentCorruptProductDTOToDepartmentCorruptProduct(departmentProductDTO);
-        assertNotNull(departmentCorruptProduct);
+    void departmentProductDTOToDepartmentProduct() {
+     Product  departmentProduct =
+             productMapper.productDTOToProduct(departmentProductDTO);
+     assertNotNull(departmentProduct);
     }
 
     @Test
-    void departmentCorruptProductToDepartmentCorruptProductDTO() {
-        DepartmentCorruptProductDTO departmentCorruptProductDTO = departmentCorruptProductMapper.departmentCorruptProductToDepartmentCorruptProductDTO(departmentProduct);
-        assertNotNull(departmentCorruptProductDTO);
+    void departmentProductToDepartmentProductDTO() {
+        ProductDTO departmentProductDTO =
+                productMapper.productToProductDTO(departmentProduct);
+        assertNotNull(departmentProductDTO);
     }
 }
