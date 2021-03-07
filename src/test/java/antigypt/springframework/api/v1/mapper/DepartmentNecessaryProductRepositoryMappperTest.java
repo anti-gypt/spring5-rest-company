@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DepartmentNecessaryProductMappperTest {
+class DepartmentNecessaryProductRepositoryMappperTest {
     private static final String PHONENUMBER = "12345678";
     private static final String EMAIL = "omid@gmail.com";
     private static final String DETAIL = "this is detail";
@@ -109,7 +109,7 @@ class DepartmentNecessaryProductMappperTest {
         departmentProduct.setProductName(PRODUCT_NAME);
         departmentProduct.setSerialNumber(getBytes);
         departmentProduct.setWeight(Double.valueOf(WEIGHT));
-        departmentProduct.setDepartment(savedReturnedDepartment);
+
         departmentProduct.setProductType(productType);
 
         departmentProductDTO = new DepartmentNecessaryProductDTO();
@@ -123,7 +123,7 @@ class DepartmentNecessaryProductMappperTest {
         departmentProductDTO.setProductName(PRODUCT_NAME);
         departmentProductDTO.setSerialNumber(getBytes);
         departmentProductDTO.setWeight(WEIGHT);
-        departmentProductDTO.setDepartment(sendedDepartmentDTO);
+
         departmentProductDTO.setProductType(productTypeDTO);
         departmentProductDTO.setProductUrl("/api/v1/products/1");
 

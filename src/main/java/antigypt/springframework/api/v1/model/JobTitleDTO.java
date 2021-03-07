@@ -15,5 +15,5 @@ public class JobTitleDTO {
     @NotBlank
     private String jobTitleName;
     private Long jobTitleUrl;
-    private EmployeeListDTO employees;
+
 }

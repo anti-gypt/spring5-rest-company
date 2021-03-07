@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by omid on 11/19/2020.
@@ -30,11 +29,12 @@ public class ProductType {
     @Column(name = "detail")
     private String detail;
 
-    @OneToMany(mappedBy = "productType" , cascade = CascadeType.ALL)
-    private List<DepartmentProduct> departmentProductsList = new ArrayList<>();
-    @OneToMany(mappedBy = "productType" , cascade = CascadeType.ALL)
-    private List<DepartmentCorruptProduct> departmentCorruptProductsList = new ArrayList<>();
-    @OneToMany(mappedBy = "productType" , cascade = CascadeType.ALL)
-    private List<DepartmentNecessaryProduct> departmentNecessaryProductsList = new ArrayList<>();
+   // @OneToMany(mappedBy = "productType" , cascade = CascadeType.ALL)
+   // private List<Product> departmentProductsList = new ArrayList<>();
+   // @OneToMany(mappedBy = "productType" , cascade = CascadeType.ALL)
+   // private List<DepartmentCorruptProduct> departmentCorruptProductsList = new ArrayList<>();
+   // @OneToMany(mappedBy = "productType" , cascade = CascadeType.ALL)
+   // private List<DepartmentNecessaryProduct> departmentNecessaryProductsList = new ArrayList<>();
+
 
 }

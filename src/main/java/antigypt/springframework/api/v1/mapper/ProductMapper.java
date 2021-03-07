@@ -1,23 +1,27 @@
 package antigypt.springframework.api.v1.mapper;
 
-
-import antigypt.springframework.api.v1.model.EmployeeDTO;
-import antigypt.springframework.domain.Employee;
+import antigypt.springframework.api.v1.model.DepartmentDTO;
+import antigypt.springframework.api.v1.model.ProductDTO;
+import antigypt.springframework.domain.Department;
+import antigypt.springframework.domain.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 @Mapper
-public interface EmployeeMapper {
-    EmployeeMapper INSTANCE = Mappers.getMapper(EmployeeMapper.class);
+public interface ProductMapper {
+    ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
+    @Mappings({
+
+    })
+    Product productDTOToProduct(ProductDTO productDTO);
+    @Mappings({
+
+    })
+    ProductDTO productToProductDTO(Product product);
 
     @Mappings({@Mapping(
-            source = "email",
-            target = "email"
-    ), @Mapping(
             source = "address.addressLine",
             target = "addressLine"
     ), @Mapping(
@@ -32,14 +36,10 @@ public interface EmployeeMapper {
     ), @Mapping(
             source = "address.postalCode",
             target = "postalCode"
-    ), @Mapping(
-            source = "employeeList",
-            target = "employees.employees"
-    ), @Mapping(
-            source ="department.productList" ,
-            target ="department.productList.products")
+    ),
+            @Mapping(source = "productList",target = "productList.products")
     })
-    EmployeeDTO employeeToEmployeeDTO(Employee employee);
+    DepartmentDTO departmentToDepartmentDTO(Department department);
 
     @Mappings({@Mapping(
             source = "addressLine",
@@ -56,17 +56,9 @@ public interface EmployeeMapper {
     ), @Mapping(
             source = "postalCode",
             target = "address.postalCode"
-    ), @Mapping(
-            source = "employees.employees",
-            target = "employeeList"
-    ), @Mapping(
-            source ="department.productList.products" ,
-            target ="department.productList")})
-    Employee employeeDTOToEmployee(EmployeeDTO employeeDTO);
+    ),
+            @Mapping(source = "productList.products",target = "productList")
+    })
+    Department departmentDTOToDepartment(DepartmentDTO departmentDTO);
 
-
-    List<Employee> listEmployeeDTOToListEmployee(List<EmployeeDTO> employees);
-
-    List<EmployeeDTO> listEmployeeToListEmployeeDTO(List<Employee> employees);
 }
-
