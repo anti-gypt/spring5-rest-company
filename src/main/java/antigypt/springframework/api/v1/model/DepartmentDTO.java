@@ -33,4 +33,6 @@ public class DepartmentDTO {
     @JsonProperty("depratment_url")
     private String DepartmetnUrl;
 
+    private ProductListDTO productList;
+
 }
